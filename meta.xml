@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+    <id>cagent</id>
+    <name>cagent</name>
+    <description>Cagent is monitoring tool for servers/network and web</description>
+    <version>1.0.3</version>
+    <vendor>cloudradar GmbH</vendor>
+    <url>https://cloudradar.io</url>
+    <plesk_min_version>12.5.0</plesk_min_version>
+    <os>unix</os>
+</module>

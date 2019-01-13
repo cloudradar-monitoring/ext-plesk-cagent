@@ -1,0 +1,63 @@
+#!/bin/bash
+
+#********************************************
+# * Cagent monitoring Plugin for Plesk Panel
+# * @Author:   Artur Troian troian dot ap at gmail dot com
+# * @Author:   cloudradar GmbH
+# * @Copyright: (c) 2019
+#********************************************
+
+set -eu
+set -o pipefail
+
+cagent_version="1.0.3"
+
+die () {
+    echo "$@" 1>&2;
+    exit 1
+}
+
+if [[ $(uname -m) == 'x86_64' ]] ; then
+    arch_type='amd64'
+else
+    arch_type='386'
+fi
+
+if [[ ! -z $(which yum) ]]; then
+    OS_PKGTYPE="rpm"
+elif [[ ! -z $(which apt-get) ]]; then
+    OS_PKGTYPE="deb"
+else
+    die
+fi
+
+do_install () {
+    case "$OS_PKGTYPE" in
+        rpm)
+        ;;
+        deb)
+            TEMP_DEB="$(mktemp)" \
+            && wget -O "$TEMP_DEB" "https://github.com/cloudradar-monitoring/cagent/releases/download/${cagent_version}/cagent_${cagent_version}_linux_${arch_type}.deb" \
+            && dpkg -i "$TEMP_DEB" \
+            && rm -f "$TEMP_DEB" \
+            && touch /etc/init/cagent.conf
+        ;;
+    esac
+}
+
+do_uninstall () {
+    case "$OS_PKGTYPE" in
+        rpm)
+        ;;
+        deb)
+            dpkg -P cagent
+        ;;
+    esac
+}
+
+if [[ "${1:-}" = "remove" ]] ; then
+    do_uninstall
+else
+    do_install
+fi
+

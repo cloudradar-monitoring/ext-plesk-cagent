@@ -1,0 +1,13 @@
+{
+    "name": "cloudradar/ext-plesk-cagent",
+    "type": "project",
+    "require": {
+        "yosymfony/toml": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "Artur Troian",
+            "email": "troian.ap@gmail.com"
+        }
+    ]
+}
