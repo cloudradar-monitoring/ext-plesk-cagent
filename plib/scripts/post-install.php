@@ -6,7 +6,7 @@
  * @Copyright: (c) 2019
 *********************************************/
 
-$result = pm_ApiCli::callSbin('installer');
-if ($result['code'] !== 0) {
-    throw new pm_Exception ('Error occurred when installing cagent package.');
-}
+//$result = pm_ApiCli::callSbin('installer');
+//if ($result['code'] !== 0) {
+//    throw new pm_Exception ('Error occurred when installing cagent package.');
+//}

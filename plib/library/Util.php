@@ -27,4 +27,24 @@ class Modules_Cagent_Util
         else
             return NULL;
     }
+
+    public function Validate_InstallInput($input) {
+        $errors = array();
+
+        if ($input['hub_url'] == '') {
+            $errors['hub_url'] = 'Missing Hub URL!';
+        } elseif (!preg_match('/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/', $input['hub_url']) ) {
+            $errors['hub_url'] = 'Is not valid url';
+        }
+
+        if ($input['hub_user'] == '') {
+            $errors['hub_user'] = 'Missing hub user';
+        }
+
+        if ($input['hub_password'] == '') {
+            $errors['hub_password'] = 'Missing hub password';
+        }
+
+        return $errors;
+    }
 }

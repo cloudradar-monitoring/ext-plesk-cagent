@@ -20,33 +20,25 @@ class Modules_Cagent_Service extends pm_SystemService_Service
 
     public function onStart()
     {
-        $result['code'] = 1;
-        $result['stdout'] = 'unknown';
-//        $result = pm_ApiCli::callSbin('sudo', ['cagent', '--service_start'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner', ['--service_start'], pm_ApiCli::RESULT_FULL);
         return $result;
     }
 
     public function onStop()
     {
-        $result['code'] = 1;
-        $result['stdout'] = 'unknown';
-//        $result = pm_ApiCli::callSbin('sudo', ['cagent', '--service_stop'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner', ['--service_stop'], pm_ApiCli::RESULT_FULL);
         return $result;
     }
 
     public function onRestart()
     {
-        $result['code'] = 1;
-        $result['stdout'] = 'unknown';
-//        $result = pm_ApiCli::callSbin('sudo', ['cagent', '--service_restart'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner', ['--service_restart'], pm_ApiCli::RESULT_FULL);
         return $result;
     }
 
     public function isRunning()
     {
-        $result['code'] = 0;
-        $result['stdout'] = 'unknown';
-//        $result = pm_ApiCli::callSbin('sudo', ['cagent', '--service_status'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner', ['--service_status'], pm_ApiCli::RESULT_FULL);
         return $result;
     }
 
