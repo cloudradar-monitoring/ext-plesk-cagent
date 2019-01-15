@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: "pack zip"
-          command: ./pack.sh
+          command: ./pack.sh ${CIRCLE_TAG}
       - run:
           name: "install semver"
           command: |
@@ -22,9 +22,9 @@ jobs:
           command: |
             prerel=$(./semver get prerel ${CIRCLE_TAG})
             if [[ -z $prerel ]]; then
-                ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete "${CIRCLE_TAG}" ./cagent.zip
+                ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete "${CIRCLE_TAG}" ./cagent-${CIRCLE_TAG}.zip
             else
-                ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete -prerelease "${CIRCLE_TAG}" ./cagent.zip
+                ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete -prerelease "${CIRCLE_TAG}" ./cagent-${CIRCLE_TAG}.zip
             fi
 workflows:
   version: 2

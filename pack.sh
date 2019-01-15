@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-zip -r cagent.zip \
+zip -r cagent-$0.zip \
     _meta \
     htdocs \
     plib \
