@@ -34,7 +34,7 @@ fi
 do_check_install() {
     case "$OS_PKGTYPE" in
         rpm)
-            rpm -q --qf "%{VERSION}\n" grep
+            rpm -q --qf "%{VERSION}\n" cagent
         ;;
         deb)
             dpkg-query --showformat='${Version}' --show cagent
@@ -48,13 +48,16 @@ get_latest_version() {
     curl --silent "https://api.github.com/repos/cloudradar-monitoring/cagent/releases/latest" \
     | grep '"tag_name":' \
     | sed -E 's/.*"([^"]+)".*/\1/'
+
+    exit $?
 }
 
 do_install () {
     case "$OS_PKGTYPE" in
         rpm)
             CAGENT_HUB_URL=$1 CAGENT_HUB_USER=$2 CAGENT_HUB_PASSWORD=$3 \
-            rpm -i "https://github.com/cloudradar-monitoring/cagent/releases/download/${cagent_version}/cagent_${cagent_version}_linux_${arch_type}.rpm"
+            rpm -i "https://drive.google.com/uc?export=download&id=1h6Y9lmqg4r5qvyrmvY6rbvhzNCnoyODc"
+#            rpm -i "https://github.com/cloudradar-monitoring/cagent/releases/download/${cagent_version}/cagent_${cagent_version}_linux_${arch_type}.rpm"
         ;;
         deb)
 #        && wget -O "$TEMP_DEB" "https://github.com/cloudradar-monitoring/cagent/releases/download/${cagent_version}/cagent_${cagent_version}_linux_${arch_type}.deb" \

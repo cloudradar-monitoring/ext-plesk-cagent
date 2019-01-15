@@ -180,7 +180,7 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
             }
         } else {
             $msg = 'cagent get status: ';
-            $msg .= $info['stdout'];
+            $msg .= $info['stderr'];
             $output = $this->error_mesg($msg);
         }
 
