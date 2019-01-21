@@ -59,7 +59,7 @@ do_install () {
     case "$OS_PKGTYPE" in
         rpm)
             CAGENT_HUB_URL=$1 CAGENT_HUB_USER=$2 CAGENT_HUB_PASSWORD=$3 \
-            yum install  "https://drive.google.com/uc?export=download&id=1h6Y9lmqg4r5qvyrmvY6rbvhzNCnoyODc" -y
+            rpm -i "https://drive.google.com/uc?export=download&id=1h6Y9lmqg4r5qvyrmvY6rbvhzNCnoyODc"
 #            rpm -i "https://github.com/cloudradar-monitoring/cagent/releases/download/$1/cagent_$1_linux_${arch_type}.rpm"
         ;;
         deb)
@@ -77,7 +77,7 @@ do_uninstall () {
     set +e
     case "$OS_PKGTYPE" in
         rpm)
-            yum remove cagent -y
+            rpm -e cagent
         ;;
         deb)
             apt-get remove --purge cagent -y
