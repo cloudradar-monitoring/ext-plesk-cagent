@@ -10,4 +10,5 @@ zip -r cagent-$1.zip \
     DESCRIPTION.md \
     meta.xml \
     composer.json \
-    composer.lock
+    composer.lock \
+    --exclude=plib/vendor/plesk*

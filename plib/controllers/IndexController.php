@@ -73,7 +73,7 @@ class IndexController extends pm_Controller_Action {
             $info['hub_url'] = $this->util->get_request_var('hub_url');
             $info['hub_user'] = $this->util->get_request_var('hub_user');
             $info['hub_password'] = $this->util->get_request_var('hub_password');
-
+            $info['version'] = $this->installer->latest()['version'];
             $info['error'] = $this->util->Validate_InstallInput($info);
 
             if ($info['error'] == NULL) {

@@ -2,7 +2,8 @@
 <module>
     <id>cagent</id>
     <name>cagent</name>
-    <description>Cagent is monitoring tool for servers/network and web</description>
+    <description>Monitoring agent to report CPU, disk, mem and net metrics</description>
+    <category>monitoring</category>
     <version>1.0.3</version>
     <vendor>cloudradar GmbH</vendor>
     <url>https://cloudradar.io</url>

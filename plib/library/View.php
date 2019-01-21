@@ -141,10 +141,10 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         $buf .= $this->form_row('Hub URL:', $input, $info['error']['hub_url']);
 
         $input = $this->input_text('hub_user', $info['hub_user']);
-        $buf .= $this->form_row('User:', $input, $info['error']['hub_user']);
+        $buf .= $this->form_row('Hub User:', $input, $info['error']['hub_user']);
 
         $input = $this->input_password('hub_password', $info['hub_password']);
-        $buf .= $this->form_row('Retype hub_password:', $input, $info['error']['hub_password']);
+        $buf .= $this->form_row('Hub Password:', $input, $info['error']['hub_password']);
 
         $buf .= $this->button_panel_cancel_next('Cancel', 'Install');
 

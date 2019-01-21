@@ -1,9 +1,8 @@
 {
     "name": "cloudradar/ext-plesk-cagent",
     "type": "project",
-    "require": {
-        "yosymfony/toml": "^1.0",
-        "composer/semver": "^1.4"
+    "config": {
+        "vendor-dir": "plib/vendor"
     },
     "authors": [
         {
@@ -11,8 +10,11 @@
             "email": "troian.ap@gmail.com"
         }
     ],
-    "config": {
-        "vendor-dir": "plib/vendor"
+    "require": {
+        "yosymfony/toml": "^1.0",
+        "composer/semver": "^1.4"
+    },
+    "require-dev": {
+        "plesk/pm-api-stubs": "^17.9"
     }
-
 }
