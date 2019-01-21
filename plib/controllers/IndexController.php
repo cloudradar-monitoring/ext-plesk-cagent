@@ -39,7 +39,7 @@ class IndexController extends pm_Controller_Action {
             return;
         }
 
-        $this->view->dispatcher->PageHeader($do);
+        $this->view->dispatcher->PageHeader('');
 
         switch ($do) {
             case 'install':

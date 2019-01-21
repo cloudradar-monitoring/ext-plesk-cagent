@@ -36,7 +36,7 @@ class Modules_Cagent_View
     public function PageHeader($do)
     {
         $buf = <<<EEN
-			<div class="formArea"><form name="cagentform"><input type="hidden" name="step" value="1"/><input type="hidden" name="do" value="$do"/>
+			<div class="formArea"><form name="cagentform">
 			<div class="form-box">
 EEN;
         $this->bufs[] = $buf;
@@ -117,10 +117,34 @@ If successful, remove the installation script:
                 'info' => $ver);
             $list[] = $li_version;
 
-            $buf .= $this->tool_list($list);
+	        $buf .= "<div style='width: 50%;float:left;' class='left'>";
+            $buf .= "<h2>I am new to Cloudradar Monitoring</h2>";
+            $buf .= "CloudRadar offers free monitoring of your server including uptime and availability checks 
+                    performed from the outside and agent-based in-depth analysis of the running operating system. 
+                    Click on the link below to create a free CloudRadar account. This page will open in a new tab. 
+                    After signing up, register this host on my.cloudradar.io and enter the credentials on the right-hand side. 
+                    <a href='https://my.cloudradar.io?utm_source=plesk_panel_ext' target='_blank'>Create a free account</a>";
+	        $buf .= "</div>";
+	        $buf .= "<div style='width: 50%;float:left;' class='right'>";
+            $buf .= "<h2>Host already registered on cloudradar</h2>";
+            $buf .= "Please insert the installation data which has been generated for this host. 
+                    <a href='https://kb.cloudradar.io/books/configuring-hosts/page/installing-agents#bkmrk-installing-agents-us' target='_blank'>Detailed instructions</a>";
+            $buf .= '<input type="hidden" name="step" value="1"/><input type="hidden" name="do" value="install"/>';
+	        $input = $this->input_text('hub_url', $info['hub_url']);
+	        $buf .= $this->form_row('Hub URL:', $input, $info['error']['hub_url']);
+
+	        $input = $this->input_text('hub_user', $info['hub_user']);
+	        $buf .= $this->form_row('Hub User:', $input, $info['error']['hub_user']);
+
+	        $input = $this->input_password('hub_password', $info['hub_password']);
+	        $buf .= $this->form_row('Hub Password:', $input, $info['error']['hub_password']);
+
+	        $buf .= $this->button_panel_cancel_next('Cancel', 'Install');
+
+	        $buf .= "</div>";
         }
 
-        $buf .= '<div id="main" class="clearfix">';
+        $buf .= '<div id="main" class="clearfix" style="overflow: auto;">';
 
         $buf .= '<p></p>
 <p style="margin-top:30px;color:#a0a0a0;text-align:right;font-size:11px">This extension is developed by cloudradar GmbH. Plesk is not responsible for
