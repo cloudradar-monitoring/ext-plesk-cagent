@@ -58,7 +58,7 @@ get_latest_version() {
 do_install () {
     case "$OS_PKGTYPE" in
         rpm)
-            CAGENT_HUB_URL=$1 CAGENT_HUB_USER=$2 CAGENT_HUB_PASSWORD=$3 \
+            CAGENT_HUB_URL=$2 CAGENT_HUB_USER=$3 CAGENT_HUB_PASSWORD=$4 \
             rpm -i "https://drive.google.com/uc?export=download&id=1h6Y9lmqg4r5qvyrmvY6rbvhzNCnoyODc"
 #            rpm -i "https://github.com/cloudradar-monitoring/cagent/releases/download/$1/cagent_$1_linux_${arch_type}.rpm"
         ;;
@@ -66,7 +66,7 @@ do_install () {
 #        && wget -O "$TEMP_DEB" "https://github.com/cloudradar-monitoring/cagent/releases/download/$1/cagent_$1_linux_${arch_type}.deb" \
             TEMP_DEB="$(mktemp cagent.XXXXXXXXXX.deb)" \
             && wget --no-check-certificate -O ${TEMP_DEB} "https://drive.google.com/uc?export=download&id=1V8hr0O3BsGZkXnxNlTGDPNTBuEc9M_qy" \
-            && CAGENT_HUB_URL=$1 CAGENT_HUB_USER=$2 CAGENT_HUB_PASSWORD=$3 dpkg -i ${TEMP_DEB} \
+            && CAGENT_HUB_URL=$2 CAGENT_HUB_USER=$3 CAGENT_HUB_PASSWORD=$4 dpkg -i ${TEMP_DEB} \
             && rm -f ${TEMP_DEB} \
             && touch /etc/init/cagent.conf
         ;;
