@@ -3,7 +3,7 @@
 
 use Symfony\Component\Process\Process;
 
-require_once __DIR__ . "/../plib/vendor/autoload.php";
+require_once __DIR__."/../../../plib/modules/cagent/vendor/autoload.php";
 $args = ['/usr/bin/cagent', $argv[1]];
 
 $process = new Process($args);
