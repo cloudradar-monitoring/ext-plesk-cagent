@@ -6,7 +6,10 @@
  * @Copyright: (c) 2019
 *********************************************/
 
-$result = pm_ApiCli::callSbin('installer', ['uninstall']);
+pm_Settings::clean();
+
+$installer = new Modules_Cagent_Installer();
+$result = $installer->uninstall();
 if ($result['code'] !== 0) {
     throw new pm_Exception ('Error occurred when installing cagent package.');
 }

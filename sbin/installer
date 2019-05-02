@@ -20,62 +20,20 @@ die () {
     exit 1
 }
 
-if [[ $(uname -m) == 'x86_64' ]]; then
-    arch_type='amd64'
-else
-    arch_type='386'
-fi
-
-if [[ ! -z $(which yum) ]]; then
-    OS_PKGTYPE="rpm"
-elif [[ ! -z $(which apt-get) ]]; then
-    OS_PKGTYPE="deb"
-else
-    die
-fi
-
-do_check_install() {
-    case "$OS_PKGTYPE" in
-        rpm)
-            rpm -q --qf "%{VERSION}\n" cagent
-        ;;
-        deb)
-            dpkg-query --showformat='${Version}' --show cagent
-        ;;
-    esac
-
-    exit $?
-}
-
-get_latest_version() {
-    curl --silent "https://api.github.com/repos/cloudradar-monitoring/cagent/releases/latest" \
-    | grep '"tag_name":' \
-    | sed -E 's/.*"([^"]+)".*/\1/'
-
-    exit $?
-}
-
 do_install () {
-    case "$OS_PKGTYPE" in
+    case "$1" in
         rpm)
-            CAGENT_HUB_URL=$2 CAGENT_HUB_USER=$3 CAGENT_HUB_PASSWORD=$4 \
-            rpm -i "https://drive.google.com/uc?export=download&id=1h6Y9lmqg4r5qvyrmvY6rbvhzNCnoyODc"
-#            rpm -i "https://github.com/cloudradar-monitoring/cagent/releases/download/$1/cagent_$1_linux_${arch_type}.rpm"
+            rpm -i $2
         ;;
         deb)
-#        && wget -O "$TEMP_DEB" "https://github.com/cloudradar-monitoring/cagent/releases/download/$1/cagent_$1_linux_${arch_type}.deb" \
-            TEMP_DEB="$(mktemp cagent.XXXXXXXXXX.deb)" \
-            && wget --no-check-certificate -O ${TEMP_DEB} "https://drive.google.com/uc?export=download&id=1V8hr0O3BsGZkXnxNlTGDPNTBuEc9M_qy" \
-            && CAGENT_HUB_URL=$2 CAGENT_HUB_USER=$3 CAGENT_HUB_PASSWORD=$4 dpkg -i ${TEMP_DEB} \
-            && rm -f ${TEMP_DEB} \
-            && touch /etc/init/cagent.conf
+            dpkg -i $2
         ;;
     esac
 }
 
 do_uninstall () {
     set +e
-    case "$OS_PKGTYPE" in
+    case $1 in
         rpm)
             rpm -e cagent
         ;;
@@ -89,21 +47,9 @@ do_uninstall () {
 }
 
 if [[ "${1:-}" = "uninstall" ]]; then
-    do_uninstall
+    do_uninstall $2
 elif [[ "${1:-}" = "install" ]]; then
-    if [[ $# -ne 5 ]]; then
-        die "not enough arguments"
-    fi
-
-    do_install $2 $3 $4 $5
-elif [[ "${1:-}" = "check" ]] ; then
-    if [[ "${2:-}" = "installed" ]] ; then
-        do_check_install
-    elif [[ "${2:-}" = "latest" ]] ; then
-        get_latest_version
-    else
-        die "unknown check subcommand"
-    fi
+    do_install $2 $3
 else
     die "unknown command"
 fi

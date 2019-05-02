@@ -19,7 +19,7 @@ class Modules_Cagent_Extension extends pm_Extension {
         if ($result['code'] !== 0) {
             throw new Exception('cagent platform package not yet installed');
         }
-        $result = pm_ApiCli::callSbin('runner', ['-s cagent'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner.php', ['-s cagent'], pm_ApiCli::RESULT_FULL);
 
         return $result;
     }
@@ -30,7 +30,7 @@ class Modules_Cagent_Extension extends pm_Extension {
             throw new Exception('cagent platform package not yet installed');
         }
 
-        $result = pm_ApiCli::callSbin('runner', ['-u'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner.php', ['-u'], pm_ApiCli::RESULT_FULL);
 
         return $result;
     }

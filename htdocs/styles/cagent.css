@@ -1,0 +1,13 @@
+.input-text{
+    width: 100%;
+}
+.form-wrapper{
+    width: 60%;
+}
+label.required{
+    color:inherit;
+}
+
+.form-row.button-row{
+    text-align: center;
+}

@@ -1,20 +1,23 @@
 {
-    "name": "cloudradar/ext-plesk-cagent",
-    "type": "project",
-    "config": {
-        "vendor-dir": "plib/vendor"
-    },
-    "authors": [
-        {
-            "name": "Artur Troian",
-            "email": "troian.ap@gmail.com"
-        }
-    ],
-    "require": {
-        "yosymfony/toml": "^1.0",
-        "composer/semver": "^1.4"
-    },
-    "require-dev": {
-        "plesk/pm-api-stubs": "^17.9"
+  "name": "cloudradar/ext-plesk-cagent",
+  "type": "project",
+  "config": {
+    "vendor-dir": "plib/vendor"
+  },
+  "authors": [
+    {
+      "name": "Artur Troian",
+      "email": "troian.ap@gmail.com"
     }
+  ],
+  "require": {
+    "yosymfony/toml": "^1.0",
+    "composer/semver": "^1.4",
+    "guzzlehttp/guzzle": "~6.0",
+    "ext-dom": "*",
+    "symfony/process": "~4"
+  },
+  "require-dev": {
+    "plesk/pm-api-stubs": "^17.9"
+  }
 }

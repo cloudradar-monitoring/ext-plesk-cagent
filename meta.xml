@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <module>
     <id>cagent</id>
-    <name>cagent</name>
+    <name>CloudRadar Server Monitoring</name>
     <description>Monitoring agent to report CPU, disk, mem and net metrics</description>
     <category>monitoring</category>
     <version>1.0.3</version>
@@ -10,3 +10,4 @@
     <plesk_min_version>12.5.0</plesk_min_version>
     <os>unix</os>
 </module>
+

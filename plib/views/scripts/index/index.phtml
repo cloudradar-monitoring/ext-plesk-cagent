@@ -6,4 +6,140 @@
  * @Copyright: (c) 2019
  *********************************************/
 
-$this->dispatcher->dispatch();
+$this->icons = array(
+    'm_logo_cagent'      => 'images/cloudradar_logo.svg',
+    'ico_info'           => '/theme/icons/32/plesk/server-info.png',
+    'ico_error'          => '/theme/icons/32/plesk/file-error.png',
+    'ico_warning'        => '/theme/icons/32/plesk/file-alert.png',
+    'm_server_install'   => '/theme/icons/32/plesk/web-servers.png',
+    'm_server_uninstall' => '/theme/icons/32/plesk/file-delete.png',
+);
+$this->headScript()->appendFile(pm_Context::getBaseUrl() . "js/cagent.js");
+$this->headLink()->appendStylesheet(pm_Context::getBaseUrl() . "styles/cagent.css");
+$this->pageTitle = 'CloudRadar Server Monitoring';
+
+?>
+<div id="heading" style="color: #333; font-size: 21px; padding: 10px 20px;">
+    <div style="text-align: center;"><img style="width: 420px;"
+                                          alt="Cagent" src="<?php echo $this->icons['m_logo_cagent']; ?>"
+                                          onclick="window.open('https://cloudradar.io')">
+    </div>
+</div>
+<div class="formArea">
+    <div class="form-box">
+        <div style='width: 50%;float:left;' class='left'>
+            <?php if ($this->userUuid && $this->userEmail) { ?>
+                <h2>You have already created an CloudRadar Account</h2>
+                <a href="https://my.<?php echo CLOUDRADAR_URL; ?>/auth/<?php echo $this->userEmail; ?>">Log in to
+                    CloudRadar</a>
+                <?php
+            } else {
+                ?>
+                <h2>I am new to Cloudradar Monitoring</h2>
+                loudRadar offers reliable and affordable monitoring of your server including
+                <ul>
+                    <li>uptime and availability checks performed from outside</li>
+                    <li>agent-based in-depth analysis of the running operating system</li>
+                    <li>uptime and content checks of all your domains</li>
+                    <li>alerting via mobile phone, email, slack and many more</li>
+                    <li>just 1,10 &euro; / 1,20 &dollar;USD per Server per Month (Vat not included)</li>
+                </ul>
+                After signing up, register this host on my.cloudradar.io and enter the credentials on the right-hand
+                side.
+                <h3>Start your 15-days trial now
+                    <small>(no payment required)</small>
+                </h3>
+                <div id="js-registration-success" class="msg-box msg-info" style="display: none;">
+                    <div class="msg-content">
+                        <p id="js-registration-success-message"></p>
+                    </div>
+                </div>
+                <form name="cagent-form" id="cagent-form">
+                    <div class="form-wrapper">
+                        <?php echo $this->form; ?>
+                        <div class="form-row button-row">
+                        <span class="btn action">
+                            <button type="submit" id="register_button">Start free trial</button>
+                        </span>
+                        </div>
+                    </div>
+                </form>
+            <?php } ?>
+        </div>
+        <div style='width: 50%;float:left;' class='right'>
+            <?php if ($this->cagentInstalled->success()) {
+                if ($this->cagentConfigured->success()) {
+                    ?>
+                    <div class="msg-box msg-info">
+                        <div class="msg-content">
+                            <?= $this->cagentConfigured->getSuccessText(); ?>
+                        </div>
+                    </div>
+                    <?php
+                } else {
+                    ?>
+                    <div class="msg-box msg-error">
+                        <div class="msg-content">
+                            Cagent is not configured: <?= $this->cagentConfigured->getErrorText(); ?>
+                        </div>
+                    </div>
+                    <?php
+                }
+                if ($this->cagentRunning->success()) {
+                    ?>
+                    <div class="msg-box msg-info">
+                        <div class="msg-content">
+                            Cagent is running
+                        </div>
+                    </div>
+                    <?php
+                } else {
+                    ?>
+                    <div class="msg-box msg-error">
+                        <div class="msg-content">
+                            Cagent is not running: <?= $this->cagentRunning->getErrorText(); ?>
+                        </div>
+                    </div>
+                <?php }
+            } else {
+                echo $this->cagentInstalled->getErrorText();
+                ?>
+                <h2>Host already registered on cloudradar</h2>
+                <div id="js-installation-success" class="msg-box msg-info" style="display: none;">
+                    <div class="msg-content">
+                        <p id="js-installation-success-message"></p>
+                    </div>
+                </div>
+                <form name="hub-form" id="hub-form">
+                    Please insert the installation data which has been generated for this host.
+                    <a href='https://kb.cloudradar.io/books/configuring-hosts/page/installing-agents#bkmrk-installing-agents-us'
+                       target='_blank'>Detailed instructions</a>
+                    <input type="hidden" name="step" value="1"/><input type="hidden" name="do" value="install"/>
+                    <div class="form-wrapper">
+                        <div id="installation-form-row" class="form-row">
+                            <span class="field-errors" style="display: none"></span>
+                        </div>
+                        <?php
+                        echo $this->hubForm;
+                        ?>
+                        <div class="form-row button-row">
+                        <span class="btn action">
+                            <button type="submit" id="install_button">Install</button>
+                        </span>
+                        </div>
+                    </div>
+                </form>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+<div id="main" class="clearfix" style="overflow: auto;">
+    <p></p>
+    <p style="margin-top:30px;color:#a0a0a0;text-align:right;font-size:11px">This extension is developed by cloudradar
+        GmbH.
+        Plesk is not responsible for
+        support.<br/>Please contact Cloudradar at https://cloudradar.io for all related questions and issues.<br/><br/>Cagent
+        Monitoring Extension for Plesk v
+        <?php echo MODULE_VERSION; ?> </p>
+
+</div>

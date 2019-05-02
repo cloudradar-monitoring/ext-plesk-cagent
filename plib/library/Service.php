@@ -1,4 +1,7 @@
 <?php
+
+use Symfony\Component\Process\Process;
+
 /********************************************
  * Cagent monitoring Plugin for Plesk Panel
  * @Author:   Artur Troian troian dot ap at gmail dot com
@@ -20,32 +23,52 @@ class Modules_Cagent_Service extends pm_SystemService_Service
 
     public function onStart()
     {
-        $result = pm_ApiCli::callSbin('runner', ['--service_start'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner.php', ['--service_start'], pm_ApiCli::RESULT_FULL);
         return $result;
     }
 
     public function onStop()
     {
-        $result = pm_ApiCli::callSbin('runner', ['--service_stop'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner.php', ['--service_stop'], pm_ApiCli::RESULT_FULL);
         return $result;
     }
 
     public function onRestart()
     {
-        $result = pm_ApiCli::callSbin('runner', ['--service_restart'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner.php', ['--service_restart'], pm_ApiCli::RESULT_FULL);
         return $result;
     }
 
+    /**
+     * @return bool|Modules_Cagent_Status
+     */
     public function isRunning()
     {
-        $result = pm_ApiCli::callSbin('runner', ['--service_status'], pm_ApiCli::RESULT_FULL);
-        return $result;
+        $process = new Process(['/usr/bin/cagent','--service_status']);
+        $process->run();
+
+        if(!$process->isSuccessful()){
+            return new Modules_Cagent_Status(false,$process->getErrorOutput());
+        }
+        if(trim($process->getOutput()) == 'running'){
+            return new Modules_Cagent_Status(true,$process->getOutput());
+        }else{
+            return new Modules_Cagent_Status(false,$process->getOutput());
+        }
     }
 
+    /**
+     * @return bool|Modules_Cagent_Status
+     */
     public function isConfigured()
     {
-        $result = pm_ApiCli::callSbin('runner', ['-t'], pm_ApiCli::RESULT_FULL);
+        $process = new Process(['/usr/bin/cagent','-t']);
+        $process->run();
 
-        return $result;
+        if(!$process->isSuccessful()){
+            return new Modules_Cagent_Status(false,$process->getErrorOutput());
+        }
+
+        return new Modules_Cagent_Status(true,$process->getOutput());
     }
 }

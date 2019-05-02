@@ -8,7 +8,13 @@
 
 class IndexController extends pm_Controller_Action {
     private $util;
+    /**
+     * @var Modules_Cagent_Service
+     */
     private $service;
+    /**
+     * @var Modules_Cagent_Installer
+     */
     private $installer;
 
     public  $view;
@@ -17,7 +23,7 @@ class IndexController extends pm_Controller_Action {
         parent::init();
 
         define('MODULE_VERSION', '1.2.5');
-        define('CLOUDRADAR_URL', 'https://cloudradar.io');
+        define('CLOUDRADAR_URL', 'cloudradar.io');
         pm_Settings::set('CLOUDRADAR_URL', CLOUDRADAR_URL);
 
         $this->view->dispatcher = new Modules_Cagent_View($this->view);
@@ -28,32 +34,17 @@ class IndexController extends pm_Controller_Action {
     }
 
     public function indexAction() {
-        $support_actions = array('install', 'uninstall', 'configure', 'status', 'start', 'stop', 'restart', '');
 
-        $do = $this->util->get_request_var('do');
-        $step = $this->util->get_request_var('step');
-        $steps = array(0, 1, 2);
+        $this->view->form = Modules_Cagent_Util::getRegistrationForm();
+        $this->view->hubForm = Modules_Cagent_Util::getHubSettingsForm();
 
-        if (!in_array($do, $support_actions) || !in_array($step, $steps)) {
-            echo '<h1>Invalid Entrance</h1>';
-            return;
-        }
+        $this->view->userUuid = pm_Settings::get('userUuid',false);
+        $this->view->userEmail = pm_Settings::get('userEmail',false);
 
-        $this->view->dispatcher->PageHeader('');
-
-        switch ($do) {
-            case 'install':
-                $this->install_cagent($step);
-                break;
-            case 'uninstall':
-                $this->uninstall_cagent();
-                break;
-            default:
-                // Show the main page
-                $this->main_menu();
-        }
-
-        $this->view->dispatcher->PageFooter();
+        $this->view->cagentInstalled = $this->installer->isInstalled();
+        $this->view->cagentRunning = $this->installer->isInstalled();
+        $this->view->cagentConfigured = $this->service->isConfigured();
+        $this->view->cagentRunning = $this->service->isRunning();
     }
 
     private function main_menu()
@@ -93,5 +84,11 @@ class IndexController extends pm_Controller_Action {
 
     private function uninstall_cagent() {
 
+    }
+
+    public function jsonAction(){
+        $this->_helper->json([
+            'success' => true
+        ]);
     }
 }

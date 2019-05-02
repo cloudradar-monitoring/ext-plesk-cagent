@@ -74,7 +74,7 @@ If successful, remove the installation script:
         $this->bufs[] = $buf;
     }
 
-    private function tool_list($list)
+    public function tool_list($list)
     {
         $buf = '<div class="content-area"><div class="content-wrapper"><ul class="tools-list">';
         foreach ($list as $li) {
@@ -95,7 +95,7 @@ If successful, remove the installation script:
 
     public function MainMenu($info)
     {
-        $this->screen_title("Cagent Extension", FALSE);
+        $this->screen_title("CloudRadar Server Monitoring", FALSE);
 
         $buf = '<div id="heading" style="color: #333; font-size: 21px; padding: 10px 20px;">'
             . '<div style="text-align: center;"><img style="width: 420px;" '
@@ -106,7 +106,7 @@ If successful, remove the installation script:
             $buf .= $this->show_config_status($info['cagent_configured']);
             $buf .= $this->show_running_status($info['cagent_running']);
         } else {
-            $buf .= $this->section_title('Install Cagent monitoring tool');
+            $buf .= $this->section_title('Install CloudRadar Server Monitoring');
             $list = array();
 
             $ver = 'Download and install the latest stable release: ';
@@ -119,9 +119,14 @@ If successful, remove the installation script:
 
 	        $buf .= "<div style='width: 50%;float:left;' class='left'>";
             $buf .= "<h2>I am new to Cloudradar Monitoring</h2>";
-            $buf .= "CloudRadar offers free monitoring of your server including uptime and availability checks 
-                    performed from the outside and agent-based in-depth analysis of the running operating system. 
-                    Click on the link below to create a free CloudRadar account. This page will open in a new tab. 
+            $buf .= "CloudRadar offers reliable and affordable monitoring of your server including
+                    <ul>
+                    <li>uptime and availability checks performed from outside</li>
+                    <li>agent-based in-depth analysis of the running operating system</li>
+                    <li>uptime and content checks of all your domains</li>
+                    <li>alerting via mobile phone, email, slack and many more</li>
+                    <li>just 1,10 &euro; / 1,20 &dollar;USD per Server per Month (Vat not included)</li>
+                    </ul> 
                     After signing up, register this host on my.cloudradar.io and enter the credentials on the right-hand side. 
                     <a href='https://my.cloudradar.io?utm_source=plesk_panel_ext' target='_blank'>Create a free account</a>";
 	        $buf .= "</div>";
@@ -191,7 +196,7 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         $this->bufs[] = $buf;
     }
 
-    private function show_running_status($info)
+    public function show_running_status($info)
     {
         if ($info['code'] == 0) {
             $info['stdout'] = str_replace(PHP_EOL, '', $info['stdout']);
@@ -211,7 +216,7 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return $output;
     }
 
-    private function show_config_status($info)
+    public function show_config_status($info)
     {
         if ($info['code'] == 0) {
             $output = $this->info_mesg('cagent is configured');
@@ -222,7 +227,7 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return $output;
     }
 
-    private function screen_title($title, $uplinkself=TRUE)
+    public function screen_title($title, $uplinkself=TRUE)
     {
         $this->_parentview->pageTitle = $title;
         if ($uplinkself)
@@ -230,14 +235,14 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return '';
     }
 
-    private function section_title($title)
+    public function section_title($title)
     {
         //$div = '<div class="title"><div class="title-area" style="margin:15px 0 10px 0"><h3>' . $title . '</h3></div></div>' . "\n";
         $div = "<div style=\"margin-top:10px\"><fieldset><legend>$title</legend></fieldset></div>\n";
         return $div;
     }
 
-    private function input_text($name, $value, $size_class=0)
+    protected function typed_input($type = 'text', $name, $value, $size_class=0)
     {
         //size 0 : default, size 1: f-middle-size, 2: long
         $iclass = 'input-text';
@@ -245,11 +250,19 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
             $iclass = 'f-middle-size ' . $iclass;
         elseif ($size_class == 2)
             $iclass = '" size="90';
-        $input = '<input type="text" class="' . $iclass . '" name="' . $name . '" value="'. $value . '"/>';
+        $input = '<input type="'.$type.'" class="' . $iclass . '" name="' . $name . '" value="'. $value . '"/>';
         return $input;
     }
+    public function input_text($name, $value, $size_class=0)
+    {
+        return $this->typed_input('text',$name,$value,$size_class);
+    }
+    public function input_email($name, $value, $size_class=0)
+    {
+        return $this->typed_input('email',$name,$value,$size_class);
+    }
 
-    private function input_select($name, $options, $default)
+    public function input_select($name, $options, $default)
     {
         $input = '<select name="' . $name . '">';
         foreach ($options as $key => $val) {
@@ -262,33 +275,32 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return $input;
     }
 
-    private function input_password($name, $value)
+    public function input_password($name, $value)
     {
-        $input = '<input type="password" name="' . $name . '" value="' . $value . '"/>';
-        return $input;
+        return $this->typed_input('password',$name,$value);
     }
 
-    private function input_checkbox($name, $value, $ischecked)
+    public function input_checkbox($name, $value, $ischecked)
     {
         $checked = $ischecked ? 'checked="checked"' : '';
         $input = '<input type="checkbox" class="checkbox" name="' . $name . '" value="' . $value . '"'. " $checked />";
         return $input;
     }
 
-    private function input_radio($name, $value, $ischecked)
+    public function input_radio($name, $value, $ischecked)
     {
         $checked = $ischecked ? 'checked="checked"' : '';
         $input = '<input type="radio" class="radiobox" name="' . $name . '" value="' . $value . '"'. " $checked />";
         return $input;
     }
 
-    private function input_hidden($name, $value)
+    public function input_hidden($name, $value)
     {
         $input = '<input type="hidden" name="' . $name . '" value="' . $value . '"/>';
         return $input;
     }
 
-    private function form_row($label, $field, $err, $hints=NULL, $is_single=FALSE)
+    public function form_row($label, $field, $err, $hints=NULL, $is_single=FALSE)
     {
         $divclass = 'form-row';
         $errspan = '';
@@ -316,7 +328,7 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return $div;
     }
 
-    private function div_msg_box($mesg, $subtype='')
+    public function div_msg_box($mesg, $subtype='')
     {
         $style = 'msg-box';
         if ($subtype != '')
@@ -335,37 +347,37 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return $div;
     }
 
-    private function info_mesg($mesg)
+    public function info_mesg($mesg)
     {
         return $this->div_msg_box($mesg, 'msg-info');
     }
 
-    private function error_mesg($mesg)
+    public function error_mesg($mesg)
     {
         return $this->div_msg_box($mesg, 'msg-error');
     }
 
-    private function warning_mesg($mesg)
+    public function warning_mesg($mesg)
     {
         return $this->div_msg_box($mesg, 'msg-warning');
     }
 
-    private function info_panel_mesg($title, $mesg)
+    public function info_panel_mesg($title, $mesg)
     {
         return $this->div_mesg_panel($title, $mesg, $this->icons['ico_info']);
     }
 
-    private function error_panel_mesg($title, $mesg)
+    public function error_panel_mesg($title, $mesg)
     {
         return $this->div_mesg_panel($title, $mesg, $this->icons['ico_error']);
     }
 
-    private function warning_panel_mesg($title, $mesg)
+    public function warning_panel_mesg($title, $mesg)
     {
         return $this->div_mesg_panel($title, $mesg, $this->icons['ico_warning']);
     }
 
-    private function div_mesg_panel($title, $mesg, $icon)
+    public function div_mesg_panel($title, $mesg, $icon)
     {
         $box = '<div class="p-box"><div class="p-box-content">';
         if ($title != NULL) {
@@ -382,7 +394,7 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return $box;
     }
 
-    private function script_button($url, $name, $title, $disabled = 'false')
+    public function script_button($url, $name, $title, $disabled = 'false')
     {
         if ($url != SUBMIT) {
             $buf = '<span class="btn" onclick="window.location.href=\'' . $url . '\'"><button type="button" value="" name="' .
@@ -396,7 +408,7 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return $buf;
     }
 
-    private function button_panel_cancel_next($cancel_title, $next_title)
+    public function button_panel_cancel_next($cancel_title, $next_title)
     {
         $buf = '<div class="btns-box"><div class="box-area"><div class="form-row"><div class="field-name"> </div>';
         if ($cancel_title != NULL)
@@ -407,7 +419,7 @@ support.<br/>Please contact Cloudradar at https://cloudradar.io for all related 
         return $buf;
     }
 
-    private function button_panel_back($back_title)
+    public function button_panel_back($back_title)
     {
         $buf = '<div class="btns-box"><div class="box-area"><div class="form-row"><div class="field-name"> </div>';
         $buf .= $this->script_button(MODULE_URL, 'back', $back_title);
