@@ -8,5 +8,10 @@ $baseDir = dirname(dirname($vendorDir));
 return array(
     'Yosymfony\\Toml\\' => array($vendorDir . '/yosymfony/toml/src'),
     'Yosymfony\\ParserUtils\\' => array($vendorDir . '/yosymfony/parser-utils/src'),
+    'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
+    'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
+    'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
+    'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
 );
