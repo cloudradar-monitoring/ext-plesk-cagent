@@ -58,6 +58,10 @@ class Modules_Cagent_Installer
 
     public function latest()
     {
+        if('deb' == $this->packageType){
+            return 'https://repo.cloudradar.io/pool/utils/c/cloudradar-release/cloudradar-release.deb';
+        }
+
         return Modules_Cagent_Util::getLatestRelease($this->archType, $this->packageType);
     }
 
@@ -67,23 +71,32 @@ class Modules_Cagent_Installer
         if (!$downloadUrl = $this->latest()) {
             throw new Exception("Unable to get cagent download url");
         }
+        $filename = basename($downloadUrl);
+
         if ('rpm' == $this->packageType) {
-            $output = pm_ApiCli::callSbin('installer.php', [$this->packageType,$downloadUrl], pm_ApiCli::RESULT_FULL, [
+            $temp_file = sys_get_temp_dir().DIRECTORY_SEPARATOR. $filename;
+            $process = new Process(['wget','-O',$temp_file, $downloadUrl]);
+            $process->run();
+            if (!$process->isSuccessful()) {
+                throw new Exception($process->getErrorOutput());
+            }
+            $output = pm_ApiCli::callSbin('installer.php', [$this->packageType,$temp_file], pm_ApiCli::RESULT_FULL, [
                 'CAGENT_HUB_URL'      => $params['url'],
                 'CAGENT_HUB_USER'     => $params['user'],
                 'CAGENT_HUB_PASSWORD' => $params['password']
             ]);
-
+            if(file_exists($temp_file)){
+                unlink($temp_file);
+            }
             if ($output['code'] != 0) {
                 throw new Exception($output['stderr']);
             }
 
         } else {
-            $temp_file = tempnam('', 'cagent.deb.');
-            $process = new Process(['wget', '-O', $temp_file, $downloadUrl]);
+            $temp_file = sys_get_temp_dir().DIRECTORY_SEPARATOR. $filename;
+            $process = new Process(['wget','-O',$temp_file, $downloadUrl]);
             $process->run();
             if (!$process->isSuccessful()) {
-                unlink($temp_file);
                 throw new Exception($process->getErrorOutput());
             }
             $output = pm_ApiCli::callSbin('installer.php', [$this->packageType,$temp_file], pm_ApiCli::RESULT_FULL, [
@@ -92,14 +105,15 @@ class Modules_Cagent_Installer
                 'CAGENT_HUB_PASSWORD' => $params['password']
             ]);
 
+            if(file_exists($temp_file)){
+                unlink($temp_file);
+            }
             if ($output['code'] != 0) {
                 throw new Exception($output['stderr']);
             }
-            unlink($temp_file);
-            touch('/etc/init/cagent.conf');
         }
 
-        return true;
+        return $output['stdout'];
     }
 
     public function isRunning()
