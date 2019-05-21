@@ -3,51 +3,13 @@
 /********************************************
  * Cagent monitoring Plugin for Plesk Panel
  * @Author:   Artur Troian troian dot ap at gmail dot com
+ * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
  * @Author:   cloudradar GmbH
  * @Copyright: (c) 2019
  *********************************************/
 
-class Modules_Cagent_Util
+class Modules_Cloudradar_Util
 {
-    private $moduleCmd;
-
-    public function __construct()
-    {
-        $this->Init();
-    }
-
-    public function Init()
-    {
-    }
-
-    public static function get_request_var($tag)
-    {
-        if (isset($_REQUEST[$tag]))
-            return trim($_REQUEST[$tag]);
-        else
-            return NULL;
-    }
-
-    public function Validate_InstallInput($input)
-    {
-        $errors = array();
-
-        if ($input['hub_url'] == '') {
-            $errors['hub_url'] = 'Missing Hub URL!';
-        } elseif (!preg_match('/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/', $input['hub_url'])) {
-            $errors['hub_url'] = 'Is not valid url';
-        }
-
-        if ($input['hub_user'] == '') {
-            $errors['hub_user'] = 'Missing hub user';
-        }
-
-        if ($input['hub_password'] == '') {
-            $errors['hub_password'] = 'Missing hub password';
-        }
-
-        return $errors;
-    }
 
     /**
      * @return pm_Form_Simple
@@ -87,7 +49,7 @@ class Modules_Cagent_Util
                 'escape'    => false,
                 'placement' => 'append'
             ]],
-            new Modules_Cagent_CloudRadarCheckboxDecorator(['id' => 'agree'])
+            new Modules_Cloudradar_CloudRadarCheckboxDecorator(['id' => 'agree'])
         ];
         $form->addElement('checkbox', 'agree', [
             'label'          => 'I agree to the <a target="_blank" href="https://cloudradar.io/service-terms">Terms & Conditions</a> and the <a href="https://cloudradar.io/privacy-policy" target="_blank">Privacy Policy</a>',
@@ -107,13 +69,13 @@ class Modules_Cagent_Util
         $form = new pm_Form_Simple();
         $form->addElement('text', 'url', [
             'label'      => 'Hub URL',
-            'value'      => '',
+            'value'      => pm_Config::get('hub_url'),
             'required'   => true,
             'validators' => [
                 ['NotEmpty', true]
             ]
         ]);
-        $form->addElement('text', 'user', [
+        $form->addElement('text', 'hub_user', [
             'label'      => 'Hub User',
             'value'      => '',
             'required'   => true,
@@ -124,6 +86,37 @@ class Modules_Cagent_Util
         $form->addElement('text', 'password', [
             'label'      => 'Hub Password',
             'value'      => '',
+            'required'   => true,
+            'validators' => [
+                ['NotEmpty', true]
+            ]
+        ]);
+
+        return $form;
+    }
+
+    public static function getHostRegisterForm()
+    {
+        $form = new pm_Form_Simple();
+        $form->addElement('text', 'token', [
+            'label'      => 'Token',
+            'value'      => '',
+            'required'   => true,
+            'validators' => [
+                ['NotEmpty', true]
+            ]
+        ]);
+        $form->addElement('text', 'hostname', [
+            'label'      => 'Hostname',
+            'value'      => self::getHostname(),
+            'required'   => true,
+            'validators' => [
+                ['NotEmpty', true]
+            ]
+        ]);
+        $form->addElement('text', 'ip', [
+            'label'      => 'IP Address/FQDN',
+            'value'      => self::getIp(),
             'required'   => true,
             'validators' => [
                 ['NotEmpty', true]
@@ -158,5 +151,42 @@ class Modules_Cagent_Util
         $url = sprintf('https://github.com/cloudradar-monitoring/cagent/releases/download/%s/cagent_%s_linux_%s.%s', $tag_name, $tag_name, $archType, $packageType);
 
         return $url;
+    }
+
+    public static function getIp()
+    {
+        $ctx = stream_context_create([
+            'http' => [
+                'timeout' => 10,
+                'header'  => [
+                    'User-Agent: PHP'
+                ]
+            ]
+        ]);
+        $response = file_get_contents('https://api.ipify.org?format=json', false, $ctx);
+        if (false === $response) {
+            return '';
+        }
+
+        $json = json_decode($response, true);
+
+        if (false === $json) {
+            return '';
+
+        }
+        if(!isset($json['ip'])){
+            return '';
+        }
+        return $json['ip'];
+    }
+
+    public static function getHostname(){
+        return gethostname();
+        $process = new Process(['/usr/bin/cagent','--service_status']);
+        $process->run();
+
+        if(!$process->isSuccessful()){
+            return new Modules_Cloudradar_Status(false,$process->getErrorOutput());
+        }
     }
 }

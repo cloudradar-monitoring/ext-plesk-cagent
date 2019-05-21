@@ -5,10 +5,12 @@ use Symfony\Component\Process\Process;
 /********************************************
  * Cagent monitoring Plugin for Plesk Panel
  * @Author:   Artur Troian troian dot ap at gmail dot com
+ * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
  * @Author:   cloudradar GmbH
  * @Copyright: (c) 2019
  *********************************************/
-class Modules_Cagent_Installer
+
+class Modules_Cloudradar_Installer
 {
     protected $archType;
     protected $packageType;
@@ -44,16 +46,16 @@ class Modules_Cagent_Installer
         } elseif ('deb' == $this->packageType) {
             $args = ['dpkg-query', '--showformat=\'${Version}\'', '--show','cagent'];
         } else {
-            return new Modules_Cagent_Status(false, 'Package manager not found');
+            return new Modules_Cloudradar_Status(false, 'Package manager not found');
         }
         $process = new Process($args);
         $process->run();
         if (!$process->isSuccessful()) {
-            return new Modules_Cagent_Status(false, $process->getErrorOutput());
+            return new Modules_Cloudradar_Status(false, $process->getErrorOutput());
 
         }
 
-        return new Modules_Cagent_Status(true, $process->getOutput());
+        return new Modules_Cloudradar_Status(true, $process->getOutput());
     }
 
     public function latest()
@@ -62,7 +64,7 @@ class Modules_Cagent_Installer
             return 'https://repo.cloudradar.io/pool/utils/c/cloudradar-release/cloudradar-release.deb';
         }
 
-        return Modules_Cagent_Util::getLatestRelease($this->archType, $this->packageType);
+        return Modules_Cloudradar_Util::getLatestRelease($this->archType, $this->packageType);
     }
 
 
@@ -82,7 +84,7 @@ class Modules_Cagent_Installer
             }
             $output = pm_ApiCli::callSbin('installer.php', [$this->packageType,$temp_file], pm_ApiCli::RESULT_FULL, [
                 'CAGENT_HUB_URL'      => $params['url'],
-                'CAGENT_HUB_USER'     => $params['user'],
+                'CAGENT_HUB_USER'     => $params['hub_user'],
                 'CAGENT_HUB_PASSWORD' => $params['password']
             ]);
             if(file_exists($temp_file)){
@@ -101,7 +103,7 @@ class Modules_Cagent_Installer
             }
             $output = pm_ApiCli::callSbin('installer.php', [$this->packageType,$temp_file], pm_ApiCli::RESULT_FULL, [
                 'CAGENT_HUB_URL'      => $params['url'],
-                'CAGENT_HUB_USER'     => $params['user'],
+                'CAGENT_HUB_USER'     => $params['hub_user'],
                 'CAGENT_HUB_PASSWORD' => $params['password']
             ]);
 
@@ -123,7 +125,7 @@ class Modules_Cagent_Installer
 
     public function uninstall()
     {
-        $result = pm_ApiCli::callSbin('installer', ['uninstall',$this->packageType], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('uninstaller.php', [$this->packageType], pm_ApiCli::RESULT_FULL);
         $result['output'] = $result['stdout'];
         return $result;
     }

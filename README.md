@@ -1,4 +1,4 @@
-# Cagent extension for Plesk
+# CloudRadar extension for Plesk
 
 ## Install
 

@@ -10,7 +10,7 @@ $moduleId = basename(dirname(__FILE__));
 
 require_once('vendor/autoload.php');
 
-$moduleId = 'cagent';
+$moduleId = 'cloudradar';
 pm_Context::init($moduleId);
 $app = new pm_Application();
 $app->Run();

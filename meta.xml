@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <module>
-    <id>cagent</id>
+    <id>cloudradar</id>
     <name>CloudRadar Server Monitoring</name>
     <description>Monitoring agent to report CPU, disk, mem and net metrics</description>
     <category>monitoring</category>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <vendor>cloudradar GmbH</vendor>
     <url>https://cloudradar.io</url>
     <plesk_min_version>12.5.0</plesk_min_version>

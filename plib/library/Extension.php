@@ -2,21 +2,23 @@
 /********************************************
  * Cagent monitoring Plugin for Plesk Panel
  * @Author:   Artur Troian troian dot ap at gmail dot com
+ * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
  * @Author:   cloudradar GmbH
  * @Copyright: (c) 2019
  *********************************************/
 
-class Modules_Cagent_Extension extends pm_Extension {
+class Modules_Cloudradar_Extension extends pm_Extension {
     public function __construct() {
     }
 
     public function getName() {
-        return 'cagent';
+        return 'cloudradar';
     }
 
     public function enable() {
-        $result = Modules_Cagent_Installer::isInstalled();
-        if ($result['code'] !== 0) {
+        $installer = new Modules_Cloudradar_Installer();
+        $result = $installer->isInstalled();
+        if (!$result->success()) {
             throw new Exception('cagent platform package not yet installed');
         }
         $result = pm_ApiCli::callSbin('runner.php', ['-s cagent'], pm_ApiCli::RESULT_FULL);
@@ -25,8 +27,10 @@ class Modules_Cagent_Extension extends pm_Extension {
     }
 
     public function disable() {
-        $result = Modules_Cagent_Installer::isInstalled();
-        if ($result['code'] !== 0) {
+        $installer = new Modules_Cloudradar_Installer();
+        $result = $installer->isInstalled();
+
+        if (!$result->success()) {
             throw new Exception('cagent platform package not yet installed');
         }
 
@@ -36,4 +40,4 @@ class Modules_Cagent_Extension extends pm_Extension {
     }
 }
 
-return New Modules_Cagent_Extension();
+return New Modules_Cloudradar_Extension();

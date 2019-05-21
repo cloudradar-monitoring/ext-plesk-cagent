@@ -2,17 +2,13 @@
 /********************************************
  * Cagent monitoring Plugin for Plesk Panel
  * @Author:   Artur Troian troian dot ap at gmail dot com
+ * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
  * @Author:   cloudradar GmbH
  * @Copyright: (c) 2019
  *********************************************/
 
 $this->icons = array(
-    'm_logo_cagent'      => 'images/cloudradar_logo.svg',
-    'ico_info'           => '/theme/icons/32/plesk/server-info.png',
-    'ico_error'          => '/theme/icons/32/plesk/file-error.png',
-    'ico_warning'        => '/theme/icons/32/plesk/file-alert.png',
-    'm_server_install'   => '/theme/icons/32/plesk/web-servers.png',
-    'm_server_uninstall' => '/theme/icons/32/plesk/file-delete.png',
+    'm_logo_cagent'      => 'images/cloudradar_logo.svg'
 );
 $this->headScript()->appendFile(pm_Context::getBaseUrl() . "js/cagent.js");
 $this->headLink()->appendStylesheet(pm_Context::getBaseUrl() . "styles/cagent.css");
@@ -20,7 +16,7 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
 ?>
 <div id="heading" style="color: #333; font-size: 21px; padding: 10px 20px;">
     <div style="text-align: center;"><img style="width: 420px;"
-                                          alt="Cagent" src="<?php echo $this->icons['m_logo_cagent']; ?>"
+                                          alt="CloudRadar Logo" src="<?php echo $this->icons['m_logo_cagent']; ?>"
                                           onclick="window.open('https://cloudradar.io')">
     </div>
 </div>
@@ -29,13 +25,13 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
         <div style='width: 50%;float:left;' class='left'>
             <?php if ($this->userUuid && $this->userEmail) { ?>
                 <h2>You have already created an CloudRadar Account</h2>
-                <a href="https://my.<?php echo CLOUDRADAR_URL; ?>/auth/<?php echo $this->userEmail; ?>">Log in to
+                <a href="<? echo $this->registration_url; ?>/auth/<?php echo $this->userEmail; ?>" target="_blank">Log in to
                     CloudRadar</a>
                 <?php
             } else {
                 ?>
                 <h2>I am new to Cloudradar Monitoring</h2>
-                loudRadar offers reliable and affordable monitoring of your server including
+                CloudRadar offers reliable and affordable monitoring of your server including
                 <ul>
                     <li>uptime and availability checks performed from outside</li>
                     <li>agent-based in-depth analysis of the running operating system</li>
@@ -43,7 +39,7 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                     <li>alerting via mobile phone, email, slack and many more</li>
                     <li>just 1,10 &euro; / 1,20 &dollar;USD per Server per Month (Vat not included)</li>
                 </ul>
-                After signing up, register this host on my.cloudradar.io and enter the credentials on the right-hand
+                After signing up, copy an API Token or register this host on my.cloudradar.io and enter the credentials on the right-hand
                 side.
                 <h3>Start your 15-days trial now
                     <small>(no payment required)</small>
@@ -71,7 +67,7 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                     ?>
                     <div class="msg-box msg-info">
                         <div class="msg-content">
-                            <?= $this->cagentConfigured->getSuccessText(); ?>
+                            Your agent is now connected
                         </div>
                     </div>
                     <?php
@@ -101,7 +97,6 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                     </div>
                 <?php }
             } else {
-                echo $this->cagentInstalled->getErrorText();
                 ?>
                 <h2>Host already registered on cloudradar</h2>
                 <div id="js-installation-success" class="msg-box msg-info" style="display: none;">
@@ -128,17 +123,39 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                         </div>
                     </div>
                 </form>
+                <h2>I have an API token to register this host</h2>
+                <div id="js-host-register-success" class="msg-box msg-info" style="display: none;">
+                    <div class="msg-content">
+                        <p id="js-host-register-success-message"></p>
+                    </div>
+                </div>
+                <form name="host-register-form" id="host-register-form">
+                    <div class="form-wrapper">
+                        <div id="host-register-form-row" class="form-row">
+                            <span class="field-errors" style="display: none"></span>
+                        </div>
+                        <?php
+                        echo $this->hostRegisterForm;
+                        ?>
+                        <div class="form-row button-row">
+                        <span class="btn action">
+                            <button type="submit" id="host_register_button">Register host and start monitoring</button>
+                        </span>
+                        </div>
+                    </div>
+                </form>
+
             <?php } ?>
         </div>
     </div>
 </div>
-<div id="main" class="clearfix" style="overflow: auto;">
+<div class="clearfix" style="overflow: auto; clear: both">
     <p></p>
-    <p style="margin-top:30px;color:#a0a0a0;text-align:right;font-size:11px">This extension is developed by cloudradar
+    <p style="margin-top:30px;color:#a0a0a0;text-align:right;font-size:11px">This extension is developed by CloudRadar
         GmbH.
         Plesk is not responsible for
-        support.<br/>Please contact Cloudradar at https://cloudradar.io for all related questions and issues.<br/><br/>Cagent
+        support.<br/>Please contact Cloudradar at <a href="https://cloudradar.io" target="_blank">https://cloudradar.io</a> for all related questions and issues.<br/><br/>Cagent
         Monitoring Extension for Plesk v
-        <?php echo MODULE_VERSION; ?> </p>
+        <?php echo $this->version; ?> </p>
 
 </div>

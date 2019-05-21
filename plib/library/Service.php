@@ -1,24 +1,24 @@
 <?php
 
-use Symfony\Component\Process\Process;
-
 /********************************************
  * Cagent monitoring Plugin for Plesk Panel
  * @Author:   Artur Troian troian dot ap at gmail dot com
+ * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
  * @Author:   cloudradar GmbH
  * @Copyright: (c) 2019
  *********************************************/
+use Symfony\Component\Process\Process;
 
-class Modules_Cagent_Service extends pm_SystemService_Service
+class Modules_Cloudradar_Service extends pm_SystemService_Service
 {
     public function getName()
     {
-        return 'cagent';
+        return 'cloudradar';
     }
 
     public function getId ()
     {
-        return 'cagent';
+        return 'cloudradar';
     }
 
     public function onStart()
@@ -40,7 +40,7 @@ class Modules_Cagent_Service extends pm_SystemService_Service
     }
 
     /**
-     * @return bool|Modules_Cagent_Status
+     * @return bool|Modules_Cloudradar_Status
      */
     public function isRunning()
     {
@@ -48,17 +48,17 @@ class Modules_Cagent_Service extends pm_SystemService_Service
         $process->run();
 
         if(!$process->isSuccessful()){
-            return new Modules_Cagent_Status(false,$process->getErrorOutput());
+            return new Modules_Cloudradar_Status(false,$process->getErrorOutput());
         }
         if(trim($process->getOutput()) == 'running'){
-            return new Modules_Cagent_Status(true,$process->getOutput());
+            return new Modules_Cloudradar_Status(true,$process->getOutput());
         }else{
-            return new Modules_Cagent_Status(false,$process->getOutput());
+            return new Modules_Cloudradar_Status(false,$process->getOutput());
         }
     }
 
     /**
-     * @return bool|Modules_Cagent_Status
+     * @return bool|Modules_Cloudradar_Status
      */
     public function isConfigured()
     {
@@ -66,9 +66,9 @@ class Modules_Cagent_Service extends pm_SystemService_Service
         $process->run();
 
         if(!$process->isSuccessful()){
-            return new Modules_Cagent_Status(false,$process->getErrorOutput());
+            return new Modules_Cloudradar_Status(false,$process->getErrorOutput());
         }
 
-        return new Modules_Cagent_Status(true,$process->getOutput());
+        return new Modules_Cloudradar_Status(true,$process->getOutput());
     }
 }

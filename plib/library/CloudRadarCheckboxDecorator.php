@@ -1,12 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: anton
- * Date: 04.04.2019
- * Time: 14:56
- */
+/********************************************
+ * Cagent monitoring Plugin for Plesk Panel
+ * @Author:   Artur Troian troian dot ap at gmail dot com
+ * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
+ * @Author:   cloudradar GmbH
+ * @Copyright: (c) 2019
+ *********************************************/
 
-class Modules_Cagent_CloudRadarCheckboxDecorator extends Zend_Form_Decorator_Abstract
+class Modules_Cloudradar_CloudRadarCheckboxDecorator extends Zend_Form_Decorator_Abstract
 {
     public function render($content)
     {
