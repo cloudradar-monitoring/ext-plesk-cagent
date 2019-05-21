@@ -4,7 +4,17 @@
 
 ### Option1
 Install `Panel.ini` extention and open it.
-Find line containing `extensionUpload = false` and replace it with `extensionUpload = true`
+Find line containing 
+```
+[ext-catalog]
+extensionUpload = false
+```
+and replace it with 
+```
+[ext-catalog]
+extensionUpload = true
+```
+Most probably you will not have the mentioned setting. So insert it at the end of the file and click on "Save".
 
 ### Option2
 Login to your server via SSH.
