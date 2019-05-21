@@ -118,11 +118,6 @@ class Modules_Cloudradar_Installer
         return $output['stdout'];
     }
 
-    public function isRunning()
-    {
-
-    }
-
     public function uninstall()
     {
         $result = pm_ApiCli::callSbin('uninstaller.php', [$this->packageType], pm_ApiCli::RESULT_FULL);

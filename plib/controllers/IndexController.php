@@ -40,8 +40,8 @@ class IndexController extends pm_Controller_Action {
 
         $this->view->cagentInstalled = $this->installer->isInstalled();
         $this->view->cagentRunning = $this->installer->isInstalled();
-        $this->view->cagentConfigured = $this->service->isConfigured();
-        $this->view->cagentRunning = $this->service->isRunning();
+        $this->view->cagentConfigured = $this->service->isServiceConfigured();
+        $this->view->cagentRunning = $this->service->isServiceRunning();
 
         if (!$this->view->registration_url = pm_Config::get('registration_url')) {
             $this->view->registration_url = 'https://my.cloudradar.io';
