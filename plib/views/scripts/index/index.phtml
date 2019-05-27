@@ -41,7 +41,7 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                 </ul>
                 After signing up, copy an API Token or register this host on my.cloudradar.io and enter the credentials on the right-hand
                 side.
-                <h3>Start your 15-days trial now
+                <h3>Start your 30-days trial now
                     <small>(no payment required)</small>
                 </h3>
                 <div id="js-registration-success" class="msg-box msg-info" style="display: none;">
@@ -98,6 +98,38 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                 <?php }
             } else {
                 ?>
+                <h2>I have an API token to register this host</h2>
+                <div id="js-host-register-success" class="msg-box msg-info" style="display: none;">
+                    <div class="msg-content">
+                        <p id="js-host-register-success-message"></p>
+                    </div>
+                </div>
+                <div id="js-cloudradar-button" style="display: none; width: 80%">
+                    <div>
+                    Now go to <a href="https://my.cloudradar.io/" target="_blank">https://my.cloudradar.io/</a>
+                    and discover all the features of your monitoring and fine-tune thresholds and alerts<br>
+                    </div>
+                    <div style="height: 30px">
+                    <div class="btn action" style="float:right;display: inline-block">
+                            <a href="https://my.cloudradar.io/" style="color: #ffffff" target="_blank">Open CloudRadar</a>
+                        </div>
+                    </div>
+                </div>
+                <form name="host-register-form" id="host-register-form">
+                    <div class="form-wrapper">
+                        <div id="host-register-form-row" class="form-row">
+                            <span class="field-errors" style="display: none"></span>
+                        </div>
+                        <?php
+                        echo $this->hostRegisterForm;
+                        ?>
+                        <div class="form-row button-row">
+                        <span class="btn action">
+                            <button type="submit" id="host_register_button">Register host and start monitoring</button>
+                        </span>
+                        </div>
+                    </div>
+                </form>
                 <h2>Host already registered on cloudradar</h2>
                 <div id="js-installation-success" class="msg-box msg-info" style="display: none;">
                     <div class="msg-content">
@@ -123,27 +155,7 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                         </div>
                     </div>
                 </form>
-                <h2>I have an API token to register this host</h2>
-                <div id="js-host-register-success" class="msg-box msg-info" style="display: none;">
-                    <div class="msg-content">
-                        <p id="js-host-register-success-message"></p>
-                    </div>
-                </div>
-                <form name="host-register-form" id="host-register-form">
-                    <div class="form-wrapper">
-                        <div id="host-register-form-row" class="form-row">
-                            <span class="field-errors" style="display: none"></span>
-                        </div>
-                        <?php
-                        echo $this->hostRegisterForm;
-                        ?>
-                        <div class="form-row button-row">
-                        <span class="btn action">
-                            <button type="submit" id="host_register_button">Register host and start monitoring</button>
-                        </span>
-                        </div>
-                    </div>
-                </form>
+
 
             <?php } ?>
         </div>
@@ -154,7 +166,8 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
     <p style="margin-top:30px;color:#a0a0a0;text-align:right;font-size:11px">This extension is developed by CloudRadar
         GmbH.
         Plesk is not responsible for
-        support.<br/>Please contact Cloudradar at <a href="https://cloudradar.io" target="_blank">https://cloudradar.io</a> for all related questions and issues.<br/><br/>Cagent
+        support.<br/>Please contact Cloudradar at <a href="https://cloudradar.io" target="_blank">https://cloudradar.io</a> for all related questions and issues.<br/><br/>
+        CloudRadar
         Monitoring Extension for Plesk v
         <?php echo $this->version; ?> </p>
 

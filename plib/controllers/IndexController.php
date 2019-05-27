@@ -46,6 +46,6 @@ class IndexController extends pm_Controller_Action {
         if (!$this->view->registration_url = pm_Config::get('registration_url')) {
             $this->view->registration_url = 'https://my.cloudradar.io';
         }
-        $this->view->version = '1.0.4';
+        $this->view->version = '0.0.2-beta';
     }
 }
