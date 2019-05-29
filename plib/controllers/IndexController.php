@@ -36,6 +36,7 @@ class IndexController extends pm_Controller_Action {
 
 
         $this->view->userUuid = pm_Settings::get('userUuid',false);
+        $this->view->hostUuid = pm_Settings::get('hostUuid',false);
         $this->view->userEmail = pm_Settings::get('userEmail',false);
 
         $this->view->cagentInstalled = $this->installer->isInstalled();

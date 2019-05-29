@@ -91,6 +91,7 @@ class Modules_Cloudradar_Installer
                 unlink($temp_file);
             }
             if ($output['code'] != 0) {
+                Modules_Cloudradar_Util::log($output['stderr']);
                 throw new Exception($output['stderr']);
             }
 
@@ -111,9 +112,25 @@ class Modules_Cloudradar_Installer
                 unlink($temp_file);
             }
             if ($output['code'] != 0) {
+                Modules_Cloudradar_Util::log($output['stderr']);
                 throw new Exception($output['stderr']);
             }
         }
+
+        return $output['stdout'];
+    }
+
+    public function configure($params){
+        $output = pm_ApiCli::callSbin('config.php', [$params['url'],$params['hub_user'],$params['password']], pm_ApiCli::RESULT_FULL);
+
+        if ($output['code'] != 0) {
+            Modules_Cloudradar_Util::log($output['stderr']);
+            throw new Exception($output['stderr']);
+        }
+
+        Modules_Cloudradar_Util::log('Output:'.print_r($output,true));
+        Modules_Cloudradar_Util::log($output['stderr']);
+        Modules_Cloudradar_Util::log($output['stdout']);
 
         return $output['stdout'];
     }

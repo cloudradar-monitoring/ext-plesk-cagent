@@ -9,7 +9,6 @@
 
 class JsonController extends pm_Controller_Action
 {
-
     public function registerAction()
     {
         if ($this->getRequest()->isPost()) {
@@ -65,14 +64,28 @@ class JsonController extends pm_Controller_Action
         if ($this->getRequest()->isPost()) {
             $form = Modules_Cloudradar_Util::getHubSettingsForm();
             if ($form->isValid($this->getRequest()->getPost())) {
-                $installer = new Modules_Cloudradar_Installer();
                 try {
-                    $installer->install($this->getRequest()->getPost());
-                    $this->_helper->json([
-                        'success' => true,
-                        'message' => 'Cagent successfully installed'
-                    ]);
+                    $installer = new Modules_Cloudradar_Installer();
+                    $installed = $installer->isInstalled();
+                    if ($installed->success()) {
+                        $output = $installer->configure($this->getRequest()->getPost());
+                        $service = new Modules_Cloudradar_Service();
+                        $service->onRestart();
+                        $this->_helper->json([
+                            'success' => true,
+                            'message' => $output
+                        ]);
+                    } else {
+
+                        $installer->install($this->getRequest()->getPost());
+                        $this->_helper->json([
+                            'success' => true,
+                            'message' => 'Cagent successfully installed'
+                        ]);
+
+                    }
                 } catch (\Exception $e) {
+                    Modules_Cloudradar_Util::log($e->getMessage());
                     $this->_helper->json([
                         'success' => false,
                         'errors'  => ['installation' => $e->getMessage()]
@@ -121,11 +134,21 @@ class JsonController extends pm_Controller_Action
                         'hub_user' => $json['host']['uuid'],
                         'password' => $json['host']['hub_password']
                     ]);
-                    $this->_helper->json([
-                        'success' => true,
-                        'message' => 'Host created. Monitoring enabled.'
-                    ]);
+                    $service = new Modules_Cloudradar_Service();
+                    $running = $service->isServiceRunning();
+                    if ($running->success()) {
+                        $this->_helper->json([
+                            'success' => true,
+                            'message' => 'Host created. Monitoring enabled.'
+                        ]);
+                    } else {
+                        $this->_helper->json([
+                            'success' => false,
+                            'message' => 'Host created. Cagent installed. Cagent status: ' . $running->getErrorText()
+                        ]);
+                    }
                 } catch (\Exception $e) {
+                    Modules_Cloudradar_Util::log($e->getMessage());
                     $this->_helper->json([
                         'success' => false,
                         'errors'  => ['host-register' => $e->getMessage()]

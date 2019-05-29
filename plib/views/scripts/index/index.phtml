@@ -13,6 +13,7 @@ $this->icons = array(
 $this->headScript()->appendFile(pm_Context::getBaseUrl() . "js/cagent.js");
 $this->headLink()->appendStylesheet(pm_Context::getBaseUrl() . "styles/cagent.css");
 $this->pageTitle = 'CloudRadar Server Monitoring';
+
 ?>
 <div id="heading" style="color: #333; font-size: 21px; padding: 10px 20px;">
     <div style="text-align: center;"><img style="width: 420px;"
@@ -24,7 +25,7 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
     <div class="form-box">
         <div style='width: 50%;float:left;' class='left'>
             <div style="margin:10px">
-                <?php if ($this->userUuid && $this->userEmail) { ?>
+                <?php if (($this->userUuid && $this->userEmail) || $this->hostUuid || $this->cagentInstalled->success()) { ?>
                     <h2>You have already created an CloudRadar Account</h2>
                     <a href="<? echo $this->registration_url; ?>/auth/<?php echo $this->userEmail; ?>" target="_blank">Log
                         in to
@@ -71,7 +72,7 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                         ?>
                         <div class="msg-box msg-info">
                             <div class="msg-content">
-                                Your agent is now connected
+                                Your agent is now configured
                             </div>
                         </div>
                         <?php
@@ -135,34 +136,34 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                             </div>
                         </div>
                     </form>
-                    <h2>Host already registered on cloudradar</h2>
-                    <div id="js-installation-success" class="msg-box msg-info" style="display: none;">
-                        <div class="msg-content">
-                            <p id="js-installation-success-message"></p>
-                        </div>
+                <?php } ?>
+                <h2>Host already registered on cloudradar</h2>
+                <div id="js-installation-success" class="msg-box msg-info" style="display: none;">
+                    <div class="msg-content">
+                        <p id="js-installation-success-message"></p>
                     </div>
-                    <form name="hub-form" id="hub-form">
-                        Please insert the installation data which has been generated for this host.
-                        <a href='https://kb.cloudradar.io/books/configuring-hosts/page/installing-agents#bkmrk-installing-agents-us'
-                           target='_blank'>Detailed instructions</a>
-                        <input type="hidden" name="step" value="1"/><input type="hidden" name="do" value="install"/>
-                        <div class="form-wrapper">
-                            <div id="installation-form-row" class="form-row">
-                                <span class="field-errors" style="display: none"></span>
-                            </div>
-                            <?php
-                            echo $this->hubForm;
-                            ?>
-                            <div class="form-row button-row">
+                </div>
+                <form name="hub-form" id="hub-form">
+                    Please insert the installation data which has been generated for this host.
+                    <a href='https://kb.cloudradar.io/books/configuring-hosts/page/installing-agents#bkmrk-installing-agents-us'
+                       target='_blank'>Detailed instructions</a>
+                    <input type="hidden" name="step" value="1"/><input type="hidden" name="do" value="install"/>
+                    <div class="form-wrapper">
+                        <div id="installation-form-row" class="form-row">
+                            <span class="field-errors" style="display: none"></span>
+                        </div>
+                        <?php
+                        echo $this->hubForm;
+                        ?>
+                        <div class="form-row button-row">
                         <span class="btn action">
                             <button type="submit" id="install_button">Install</button>
                         </span>
-                            </div>
                         </div>
-                    </form>
+                    </div>
+                </form>
 
 
-                <?php } ?>
             </div>
         </div>
     </div>

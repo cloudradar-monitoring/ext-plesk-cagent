@@ -14,11 +14,6 @@ class ComposerStaticInitf39519cca2ba7c57e0cd04a007723fbf
     );
 
     public static $prefixLengthsPsr4 = array (
-        'Y' => 
-        array (
-            'Yosymfony\\Toml\\' => 15,
-            'Yosymfony\\ParserUtils\\' => 22,
-        ),
         'S' => 
         array (
             'Symfony\\Component\\Process\\' => 26,
@@ -40,14 +35,6 @@ class ComposerStaticInitf39519cca2ba7c57e0cd04a007723fbf
     );
 
     public static $prefixDirsPsr4 = array (
-        'Yosymfony\\Toml\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/yosymfony/toml/src',
-        ),
-        'Yosymfony\\ParserUtils\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/yosymfony/parser-utils/src',
-        ),
         'Symfony\\Component\\Process\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/process',

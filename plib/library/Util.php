@@ -189,4 +189,8 @@ class Modules_Cloudradar_Util
             return new Modules_Cloudradar_Status(false,$process->getErrorOutput());
         }
     }
+
+    public static function log($message){
+        return error_log(sprintf('[ext/cloudradar] %s',$message));
+    }
 }
