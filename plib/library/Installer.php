@@ -92,7 +92,6 @@ class Modules_Cloudradar_Installer
             }
             if ($output['code'] != 0) {
                 Modules_Cloudradar_Util::log('Output:'.print_r($output,true));
-                Modules_Cloudradar_Util::log($output['stderr']);
                 throw new Exception($output['stderr']);
             }
 

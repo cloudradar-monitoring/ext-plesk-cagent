@@ -128,6 +128,7 @@ class JsonController extends pm_Controller_Action
                     }
                     pm_Settings::set('hostUuid', $json['host']['uuid']);
                     pm_Settings::set('token', $this->getRequest()->getPost('token'));
+                    Modules_Cloudradar_Util::log('Host created:'.print_r($json,true));
                     $installer = new Modules_Cloudradar_Installer();
                     $installer->install([
                         'url'      => $json['host']['hub_url'],
