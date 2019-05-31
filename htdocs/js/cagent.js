@@ -92,6 +92,7 @@ document.observe("dom:loaded",function(){
                     if(json.success){
                         $("js-host-register-success-message").update(json.message);
                         $("host-register-form").hide();
+                        $("js-left-div").hide();
                         $("js-host-register-success").show();
                         $("js-cloudradar-button").show();
                     }else{

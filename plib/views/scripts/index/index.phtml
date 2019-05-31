@@ -25,44 +25,47 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
     <div class="form-box">
         <div style='width: 50%;float:left;' class='left'>
             <div style="margin:10px">
-                <?php if (($this->userUuid && $this->userEmail) || $this->hostUuid || $this->cagentInstalled->success()) { ?>
-                    <h2>You have already created an CloudRadar Account</h2>
-                    <a href="<? echo $this->registration_url; ?>/auth/<?php echo $this->userEmail; ?>" target="_blank">Log
-                        in to
-                        CloudRadar</a>
-                    <?php
-                } else {
-                    ?>
-                    <h2>I am new to Cloudradar Monitoring</h2>
-                    CloudRadar offers reliable and affordable monitoring of your server including
-                    <ul>
-                        <li>uptime and availability checks performed from outside</li>
-                        <li>agent-based in-depth analysis of the running operating system</li>
-                        <li>uptime and content checks of all your domains</li>
-                        <li>alerting via mobile phone, email, slack and many more</li>
-                        <li>just 1,10 &euro; / 1,20 &dollar;USD per Server per Month (Vat not included)</li>
-                    </ul>
-                    After signing up, copy an API Token or register this host on my.cloudradar.io and enter the credentials on the right-hand
-                    side.
-                    <h3>Start your 30-days trial now
-                        <small>(no payment required)</small>
-                    </h3>
-                    <div id="js-registration-success" class="msg-box msg-info" style="display: none;">
-                        <div class="msg-content">
-                            <p id="js-registration-success-message"></p>
+                <div id="js-left-div">
+                    <?php if (($this->userUuid && $this->userEmail) || $this->hostUuid || $this->cagentInstalled->success()) { ?>
+                        <h2>You have already created an CloudRadar Account</h2>
+                        <a href="<? echo $this->registration_url; ?>/auth/<?php echo $this->userEmail; ?>"
+                           target="_blank">Log
+                            in to
+                            CloudRadar</a>
+                        <?php
+                    } else {
+                        ?>
+                        <h2>I am new to Cloudradar Monitoring</h2>
+                        CloudRadar offers reliable and affordable monitoring of your server including
+                        <ul>
+                            <li>uptime and availability checks performed from outside</li>
+                            <li>agent-based in-depth analysis of the running operating system</li>
+                            <li>uptime and content checks of all your domains</li>
+                            <li>alerting via mobile phone, email, slack and many more</li>
+                            <li>just 1,10 &euro; / 1,20 &dollar;USD per Server per Month (Vat not included)</li>
+                        </ul>
+                        After signing up, copy an API Token or register this host on my.cloudradar.io and enter the credentials on the right-hand
+                        side.
+                        <h3>Start your 30-days trial now
+                            <small>(no payment required)</small>
+                        </h3>
+                        <div id="js-registration-success" class="msg-box msg-info" style="display: none;">
+                            <div class="msg-content">
+                                <p id="js-registration-success-message"></p>
+                            </div>
                         </div>
-                    </div>
-                    <form name="cagent-form" id="cagent-form">
-                        <div class="form-wrapper">
-                            <?php echo $this->form; ?>
-                            <div class="form-row button-row">
+                        <form name="cagent-form" id="cagent-form">
+                            <div class="form-wrapper">
+                                <?php echo $this->form; ?>
+                                <div class="form-row button-row">
                         <span class="btn action">
                             <button type="submit" id="register_button">Start free trial</button>
                         </span>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                <?php } ?>
+                        </form>
+                    <?php } ?>
+                </div>
             </div>
         </div>
         <div style='width: 50%;float:left;' class='right'>

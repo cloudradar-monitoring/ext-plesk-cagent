@@ -91,6 +91,7 @@ class Modules_Cloudradar_Installer
                 unlink($temp_file);
             }
             if ($output['code'] != 0) {
+                Modules_Cloudradar_Util::log('Output:'.print_r($output,true));
                 Modules_Cloudradar_Util::log($output['stderr']);
                 throw new Exception($output['stderr']);
             }
@@ -112,7 +113,7 @@ class Modules_Cloudradar_Installer
                 unlink($temp_file);
             }
             if ($output['code'] != 0) {
-                Modules_Cloudradar_Util::log($output['stderr']);
+                Modules_Cloudradar_Util::log('Output:'.print_r($output,true));
                 throw new Exception($output['stderr']);
             }
         }
@@ -129,8 +130,6 @@ class Modules_Cloudradar_Installer
         }
 
         Modules_Cloudradar_Util::log('Output:'.print_r($output,true));
-        Modules_Cloudradar_Util::log($output['stderr']);
-        Modules_Cloudradar_Util::log($output['stdout']);
 
         return $output['stdout'];
     }
