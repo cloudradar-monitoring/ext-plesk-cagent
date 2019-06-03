@@ -56,6 +56,9 @@ document.observe("dom:loaded",function(){
                     if(json.success){
                         $("js-installation-success-message").update(json.message);
                         $("hub-form").hide();
+                        $("host-register-form").hide();
+                        $("js-h2-api-token").hide();
+                        $("js-left-div").hide();
                         $("js-installation-success").show();
                     }else{
                         for(var field in json.errors){
