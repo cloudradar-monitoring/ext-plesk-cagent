@@ -42,7 +42,9 @@ class Modules_Cloudradar_CloudRadarAPI
         $data = [];
         $license = new pm_License();
         $data['key-number'] = $license->getProperty('plesk_key_id');
-        $data['plesk-release'] = trim(file_get_contents('/etc/plesk-release'));
+        //construct string like 17.8.11 ubuntu18.04.build1708180613.11 which can be found in /etc/plesk-release
+        $version = pm_ApiRpc::getService()->call('<server><get><stat/></get></server>')->server->get->result->stat->version;
+        $data['plesk-release'] = sprintf('%s %s%s.build%s', $version->plesk_version, $version->plesk_os, $version->plesk_os_version, $version->plesk_build);
         $configReader = new Modules_Cloudradar_PleskConfigReader();
         if ($config = $configReader->getData()) {
             $data += $config;

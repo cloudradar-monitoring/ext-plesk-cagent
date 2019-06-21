@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#********************************************
+# * CloudRadar monitoring Plugin for Plesk Panel
+# * @Author:   Artur Troian troian dot ap at gmail dot com
+# * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
+# * @Author:   cloudradar GmbH
+# * @Copyright: (c) 2019
+#********************************************
+
+# fail if command return is no 0
+set -e
+
+# fail if dereferencing variable is not set
+set -u
+
+set -o pipefail
+
+die () {
+    echo "$@" 1>&2;
+    exit 1
+}
+
+if [[ "${1:-}" = "rpm" ]]; then
+    yum -y localinstall $2
+elif [[ "${1:-}" = "deb" ]]; then
+    dpkg -i $2 && \
+    apt-get update && \
+    apt-get install cagent -y
+else
+    die "unknown command"
+fi
+

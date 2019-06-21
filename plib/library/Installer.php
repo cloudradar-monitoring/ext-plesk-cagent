@@ -20,23 +20,13 @@ class Modules_Cloudradar_Installer
      */
     public function __construct()
     {
-        if ('x86_64' == php_uname('m')) {
+        if ('x86_64' == pm_ProductInfo::getOsArch()) {
             $this->archType = 'amd64';
         } else {
             $this->archType = 'i386';
         }
 
-        $process = new Process(['which', 'yum']);
-        $process->run();
-        if (!empty($process->getOutput())) {
-            $this->packageType = 'rpm';
-        }
-
-        $process = new Process(['which', 'apt-get']);
-        $process->run();
-        if (!empty($process->getOutput())) {
-            $this->packageType = 'deb';
-        }
+        $this->packageType = pm_ProductInfo::getOsPackageType();
     }
 
     public function isInstalled()
@@ -68,12 +58,18 @@ class Modules_Cloudradar_Installer
     }
 
 
+    /**
+     * @param $params
+     * @return mixed
+     * @throws pm_Exception
+     */
     public function install($params)
     {
         if (!$downloadUrl = $this->latest()) {
             throw new Exception("Unable to get cagent download url");
         }
         $filename = basename($downloadUrl);
+        $fileManager = new pm_ServerFileManager();
 
         if ('rpm' == $this->packageType) {
             $temp_file = sys_get_temp_dir().DIRECTORY_SEPARATOR. $filename;
@@ -82,13 +78,13 @@ class Modules_Cloudradar_Installer
             if (!$process->isSuccessful()) {
                 throw new Exception($process->getErrorOutput());
             }
-            $output = pm_ApiCli::callSbin('installer.php', [$this->packageType,$temp_file], pm_ApiCli::RESULT_FULL, [
+            $output = pm_ApiCli::callSbin('installer', [$this->packageType,$temp_file], pm_ApiCli::RESULT_FULL, [
                 'CAGENT_HUB_URL'      => $params['url'],
                 'CAGENT_HUB_USER'     => $params['hub_user'],
-                'CAGENT_HUB_PASSWORD' => $params['password']
+                'CAGENT_HUB_PASSWORD' => $params['hub_password']
             ]);
-            if(file_exists($temp_file)){
-                unlink($temp_file);
+            if($fileManager->fileExists($temp_file)){
+                $fileManager->removeFile($temp_file);
             }
             if ($output['code'] != 0) {
                 Modules_Cloudradar_Util::log('Output:'.print_r($output,true));
@@ -96,20 +92,20 @@ class Modules_Cloudradar_Installer
             }
 
         } else {
-            $temp_file = sys_get_temp_dir().DIRECTORY_SEPARATOR. $filename;
+            $temp_file = pm_ProductInfo::getPrivateTempDir().DIRECTORY_SEPARATOR. $filename;
             $process = new Process(['wget','-O',$temp_file, $downloadUrl]);
             $process->run();
             if (!$process->isSuccessful()) {
                 throw new Exception($process->getErrorOutput());
             }
-            $output = pm_ApiCli::callSbin('installer.php', [$this->packageType,$temp_file], pm_ApiCli::RESULT_FULL, [
+            $output = pm_ApiCli::callSbin('installer', [$this->packageType,$temp_file], pm_ApiCli::RESULT_FULL, [
                 'CAGENT_HUB_URL'      => $params['url'],
                 'CAGENT_HUB_USER'     => $params['hub_user'],
-                'CAGENT_HUB_PASSWORD' => $params['password']
+                'CAGENT_HUB_PASSWORD' => $params['hub_password']
             ]);
 
-            if(file_exists($temp_file)){
-                unlink($temp_file);
+            if($fileManager->fileExists($temp_file)){
+                $fileManager->removeFile($temp_file);
             }
             if ($output['code'] != 0) {
                 Modules_Cloudradar_Util::log('Output:'.print_r($output,true));
@@ -121,7 +117,7 @@ class Modules_Cloudradar_Installer
     }
 
     public function configure($params){
-        $output = pm_ApiCli::callSbin('config.php', [$params['url'],$params['hub_user'],$params['password']], pm_ApiCli::RESULT_FULL);
+        $output = pm_ApiCli::callSbin('config', [str_replace("/","\/",$params['url']),$params['hub_user'], $params['hub_password']], pm_ApiCli::RESULT_FULL);
 
         if ($output['code'] != 0) {
             Modules_Cloudradar_Util::log($output['stderr']);
@@ -135,7 +131,7 @@ class Modules_Cloudradar_Installer
 
     public function uninstall()
     {
-        $result = pm_ApiCli::callSbin('uninstaller.php', [$this->packageType], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('uninstaller', [$this->packageType], pm_ApiCli::RESULT_FULL);
         $result['output'] = $result['stdout'];
         return $result;
     }

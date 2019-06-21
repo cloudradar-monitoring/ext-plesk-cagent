@@ -1,13 +1,13 @@
-.input-text{
+.cloudradar .input-text{
     width: 100%;
 }
-.form-wrapper{
+.cloudradar-form-wrapper{
     width: 80%;
 }
-label.required{
+.cloudradar label.required{
     color:inherit;
 }
 
-.form-row.button-row{
+.cloudradar .form-row.button-row{
     text-align: center;
 }

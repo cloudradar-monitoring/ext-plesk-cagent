@@ -23,5 +23,5 @@ $installer = new Modules_Cloudradar_Installer();
 $result = $installer->uninstall();
 if ($result['code'] !== 0) {
     Modules_Cloudradar_Util::log('Uninstall:'.print_r($result,true));
-    throw new pm_Exception ('Error occurred when unstalling cagent package.');
+    throw new pm_Exception ('Error occurred when uninstalling cagent package.'.print_r($result,true));
 }

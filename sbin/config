@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#********************************************
+# * CloudRadar monitoring Plugin for Plesk Panel
+# * @Author:   Artur Troian troian dot ap at gmail dot com
+# * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
+# * @Author:   cloudradar GmbH
+# * @Copyright: (c) 2019
+#********************************************
+
+# fail if command return is no 0
+set -e
+
+# fail if dereferencing variable is not set
+set -u
+
+set -o pipefail
+
+sed -i -r -e 's/hub_url = .*/hub_url = "'$1'"/g' /etc/cagent/cagent.conf
+sed -i -e 's/hub_user = .*/hub_user = "'$2'"/g' /etc/cagent/cagent.conf
+sed -i -e 's/hub_password = .*/hub_password = "'$3'"/g' /etc/cagent/cagent.conf
+
+echo "Configuration updated"

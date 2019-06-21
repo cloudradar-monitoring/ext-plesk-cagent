@@ -8,8 +8,6 @@
 
 $moduleId = basename(dirname(__FILE__));
 
-require_once('vendor/autoload.php');
-
 $moduleId = 'cloudradar';
 pm_Context::init($moduleId);
 $app = new pm_Application();

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#********************************************
+# * CloudRadar monitoring Plugin for Plesk Panel
+# * @Author:   Artur Troian troian dot ap at gmail dot com
+# * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
+# * @Author:   cloudradar GmbH
+# * @Copyright: (c) 2019
+#********************************************
+
+# fail if command return is no 0
+set -e
+
+# fail if dereferencing variable is not set
+set -u
+
+set -o pipefail
+
+set +e
+case $1 in
+    rpm)
+        rpm -e cagent
+    ;;
+    deb)
+        apt-get remove --purge cagent -y
+    ;;
+esac
+
+rm -rf /etc/cagent
+rm -rf /var/log/cagent/

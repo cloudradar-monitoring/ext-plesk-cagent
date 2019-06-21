@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#********************************************
+# * CloudRadar monitoring Plugin for Plesk Panel
+# * @Author:   Artur Troian troian dot ap at gmail dot com
+# * @Author:   Anton Gribanov anton dot gribanov at gmail dot com
+# * @Author:   cloudradar GmbH
+# * @Copyright: (c) 2019
+#********************************************
+
+# fail if command return is no 0
+set -e
+
+# fail if dereferencing variable is not set
+set -u
+
+set -o pipefail
+
+/usr/bin/cagent $1

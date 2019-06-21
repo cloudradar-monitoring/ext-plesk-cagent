@@ -13,7 +13,8 @@ $this->icons = array(
 $this->headScript()->appendFile(pm_Context::getBaseUrl() . "js/cagent.js");
 $this->headLink()->appendStylesheet(pm_Context::getBaseUrl() . "styles/cagent.css");
 $this->pageTitle = 'CloudRadar Server Monitoring';
-
+$session = new pm_Session();
+$client = $session->getClient();
 ?>
 <div id="heading" style="color: #333; font-size: 21px; padding: 10px 20px;">
     <div style="text-align: center;"><img style="width: 420px;"
@@ -21,7 +22,8 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                                           onclick="window.open('https://cloudradar.io')">
     </div>
 </div>
-<div class="formArea">
+<?php if($client->isAdmin()){?>
+<div class="formArea cloudradar">
     <div class="form-box">
         <div style='width: 50%;float:left;' class='left'>
             <div style="margin:10px">
@@ -55,9 +57,9 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                             </div>
                         </div>
                         <form name="cagent-form" id="cagent-form">
-                            <div class="form-wrapper">
+                            <div class="cloudradar-form-wrapper">
                                 <?php echo $this->form; ?>
-                                <div class="form-row button-row">
+                                <div class="cloudradar-form-row button-row">
                         <span class="btn action">
                             <button type="submit" id="register_button">Start free trial</button>
                         </span>
@@ -125,14 +127,14 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                         </div>
                     </div>
                     <form name="host-register-form" id="host-register-form">
-                        <div class="form-wrapper">
+                        <div class="cloudradar-form-wrapper">
                             <div id="host-register-form-row" class="form-row">
                                 <span class="field-errors" style="display: none"></span>
                             </div>
                             <?php
                             echo $this->hostRegisterForm;
                             ?>
-                            <div class="form-row button-row">
+                            <div class="cloudradar-form-row button-row">
                         <span class="btn action">
                             <button type="submit" id="host_register_button">Register host and start monitoring</button>
                         </span>
@@ -151,14 +153,14 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
                     <a href='https://docs.cloudradar.io/configuring-hosts/installing-agents'
                        target='_blank'>Detailed instructions</a>
                     <input type="hidden" name="step" value="1"/><input type="hidden" name="do" value="install"/>
-                    <div class="form-wrapper">
+                    <div class="cloudradar-form-wrapper">
                         <div id="installation-form-row" class="form-row">
                             <span class="field-errors" style="display: none"></span>
                         </div>
                         <?php
                         echo $this->hubForm;
                         ?>
-                        <div class="form-row button-row">
+                        <div class="cloudradar-form-row button-row">
                         <span class="btn action">
                             <button type="submit" id="install_button">Install</button>
                         </span>
@@ -171,6 +173,11 @@ $this->pageTitle = 'CloudRadar Server Monitoring';
         </div>
     </div>
 </div>
+<?php }else{ ?>
+<div>
+    <h1>Administrative rights required</h1>
+</div>
+<?php } ?>
 <div class="clearfix" style="overflow: auto; clear: both">
     <p></p>
     <p style="margin-top:30px;color:#a0a0a0;text-align:right;font-size:11px">This extension is developed by CloudRadar

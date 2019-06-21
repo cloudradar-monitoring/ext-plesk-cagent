@@ -27,7 +27,7 @@ class Modules_Cloudradar_Service extends pm_SystemService_Service
 
     public function onStart()
     {
-        $result = pm_ApiCli::callSbin('runner.php', ['-service_start'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner', ['-service_start'], pm_ApiCli::RESULT_FULL);
         if(0 !== $result['code']){
             Modules_Cloudradar_Util::log($result['stderr']);
             throw new pm_Exception($result['stderr']);
@@ -38,7 +38,7 @@ class Modules_Cloudradar_Service extends pm_SystemService_Service
 
     public function onStop()
     {
-        $result = pm_ApiCli::callSbin('runner.php', ['-service_stop'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner', ['-service_stop'], pm_ApiCli::RESULT_FULL);
         if(0 !== $result['code']){
             Modules_Cloudradar_Util::log($result['stderr']);
             throw new pm_Exception($result['stderr']);
@@ -48,7 +48,7 @@ class Modules_Cloudradar_Service extends pm_SystemService_Service
 
     public function onRestart()
     {
-        $result = pm_ApiCli::callSbin('runner.php', ['-service_restart'], pm_ApiCli::RESULT_FULL);
+        $result = pm_ApiCli::callSbin('runner', ['-service_restart'], pm_ApiCli::RESULT_FULL);
         if(0 !== $result['code']){
             Modules_Cloudradar_Util::log($result['stderr']);
             throw new pm_Exception($result['stderr']);

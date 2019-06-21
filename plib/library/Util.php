@@ -83,7 +83,7 @@ class Modules_Cloudradar_Util
                 ['NotEmpty', true]
             ]
         ]);
-        $form->addElement('text', 'password', [
+        $form->addElement('text', 'hub_password', [
             'label'      => 'Hub Password',
             'value'      => '',
             'required'   => true,
@@ -191,6 +191,6 @@ class Modules_Cloudradar_Util
     }
 
     public static function log($message){
-        return error_log(sprintf('[ext/cloudradar] %s',$message));
+        return pm_Log::info(sprintf('[ext/cloudradar] %s',$message));
     }
 }
