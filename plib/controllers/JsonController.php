@@ -161,9 +161,9 @@ class JsonController extends pm_Controller_Action
                     Modules_Cloudradar_Util::log('Host created:'.print_r($json,true));
                     $installer = new Modules_Cloudradar_Installer();
                     $installer->install([
-                        'url'      => $json['host']['hub_url'],
-                        'hub_user' => $json['host']['uuid'],
-                        'password' => $json['host']['hub_password']
+                        'url'          => $json['host']['hub_url'],
+                        'hub_user'     => $json['host']['uuid'],
+                        'hub_password' => $json['host']['hub_password']
                     ]);
                     $service = new Modules_Cloudradar_Service();
                     $running = $service->isServiceRunning();
