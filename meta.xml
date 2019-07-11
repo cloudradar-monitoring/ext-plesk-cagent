@@ -4,8 +4,8 @@
     <name>CloudRadar Server Monitoring</name>
     <description>Monitoring agent to report CPU, disk, mem and net metrics</description>
     <category>monitoring</category>
-    <version>0.0.2-beta</version>
-    <release>0.0.2-beta</release>
+    <version>1.0.0</version>
+    <release>1</release>
     <vendor>cloudradar GmbH</vendor>
     <url>https://cloudradar.io</url>
     <plesk_min_version>12.5.0</plesk_min_version>

@@ -72,7 +72,7 @@ class Modules_Cloudradar_Installer
         $fileManager = new pm_ServerFileManager();
 
         if ('rpm' == $this->packageType) {
-            $temp_file = sys_get_temp_dir().DIRECTORY_SEPARATOR. $filename;
+            $temp_file = pm_Context::getVarDir().DIRECTORY_SEPARATOR. $filename;
             $process = new Process(['wget','-O',$temp_file, $downloadUrl]);
             $process->run();
             if (!$process->isSuccessful()) {
@@ -92,7 +92,7 @@ class Modules_Cloudradar_Installer
             }
 
         } else {
-            $temp_file = pm_ProductInfo::getPrivateTempDir().DIRECTORY_SEPARATOR. $filename;
+            $temp_file = pm_Context::getVarDir().DIRECTORY_SEPARATOR. $filename;
             $process = new Process(['wget','-O',$temp_file, $downloadUrl]);
             $process->run();
             if (!$process->isSuccessful()) {

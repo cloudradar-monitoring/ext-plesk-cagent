@@ -13,8 +13,6 @@ $this->icons = array(
 $this->headScript()->appendFile(pm_Context::getBaseUrl() . "js/cagent.js");
 $this->headLink()->appendStylesheet(pm_Context::getBaseUrl() . "styles/cagent.css");
 $this->pageTitle = 'CloudRadar Server Monitoring';
-$session = new pm_Session();
-$client = $session->getClient();
 ?>
 <div id="heading" style="color: #333; font-size: 21px; padding: 10px 20px;">
     <div style="text-align: center;"><img style="width: 420px;"
@@ -22,7 +20,7 @@ $client = $session->getClient();
                                           onclick="window.open('https://cloudradar.io')">
     </div>
 </div>
-<?php if($client->isAdmin()){?>
+<?php if(pm_Session::getClient()->isAdmin()){?>
 <div class="formArea cloudradar">
     <div class="form-box">
         <div style='width: 50%;float:left;' class='left'>

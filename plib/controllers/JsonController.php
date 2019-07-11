@@ -9,18 +9,10 @@
 
 class JsonController extends pm_Controller_Action
 {
-    protected $client;
-    public function __construct(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response, array $invokeArgs = array())
-    {
-        parent::__construct($request, $response, $invokeArgs);
-        $session = new pm_Session();
-        $this->client = $session->getClient();
-
-    }
 
     public function registerAction()
     {
-        if(!$this->client->isAdmin()){
+        if(!pm_Session::getClient()->isAdmin()){
             $this->_helper->json([
                 'success' => false,
                 'errors'  => ['Administrative rights required']
@@ -77,7 +69,7 @@ class JsonController extends pm_Controller_Action
     public function installAction()
     {
 
-        if(!$this->client->isAdmin()){
+        if(!pm_Session::getClient()->isAdmin()){
             $this->_helper->json([
                 'success' => false,
                 'errors'  => ['Administrative rights required']
@@ -129,7 +121,7 @@ class JsonController extends pm_Controller_Action
     public function registerHostAction()
     {
 
-        if(!$this->client->isAdmin()){
+        if(!pm_Session::getClient()->isAdmin()){
             $this->_helper->json([
                 'success' => false,
                 'errors'  => ['Administrative rights required']
