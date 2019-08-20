@@ -2,12 +2,13 @@
 <module>
     <id>cloudradar</id>
     <name>CloudRadar Server Monitoring</name>
-    <description>Monitoring agent to report CPU, disk, mem and net metrics</description>
+    <description>Monitoring agent to report CPU, disk, memory and network metrics</description>
     <category>monitoring</category>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <release>1</release>
     <vendor>cloudradar GmbH</vendor>
-    <url>https://cloudradar.io</url>
+    <url>https://www.cloudradar.io</url>
+    <support_url>https://www.cloudradar.io/support</support_url>
     <plesk_min_version>17.0.0</plesk_min_version>
     <os>unix</os>
 </module>
