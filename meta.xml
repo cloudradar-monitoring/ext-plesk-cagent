@@ -8,7 +8,7 @@
     <release>1</release>
     <vendor>cloudradar GmbH</vendor>
     <url>https://cloudradar.io</url>
-    <plesk_min_version>12.5.0</plesk_min_version>
+    <plesk_min_version>17.0.0</plesk_min_version>
     <os>unix</os>
 </module>
 
